@@ -13,14 +13,14 @@ Quizzes live as subroutes of the `quizzes/` Next.js app. Each quiz is a self-con
 
 ### 1. Add data to `src/lib/`
 
-Put static answer data and a normalize/match helper in `quizzes/src/lib/`:
-
 ```ts
 // quizzes/src/lib/presidents.ts
 export const PRESIDENTS = ['George Washington', 'John Adams', ...];
 
+const NORMALIZED = new Map(PRESIDENTS.map(p => [p.toLowerCase(), p]));
+
 export function matchPresident(guess: string): string | null {
-  // return canonical answer or null
+  return NORMALIZED.get(guess.trim().toLowerCase()) ?? null;
 }
 ```
 
@@ -30,7 +30,7 @@ export function matchPresident(guess: string): string | null {
 quizzes/src/app/<your-slug>/page.tsx
 ```
 
-The page should be `'use client'` and follow this pattern (see `us-states/page.tsx` or `us-capitals/page.tsx` for full examples):
+Follow this pattern (see `us-states/page.tsx` for a minimal example):
 
 ```tsx
 'use client';
@@ -39,43 +39,85 @@ import Link from 'next/link';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const LS_GUESSED = 'your-slug-guessed';
-const LS_STATE  = 'your-slug-gamestate';
+const LS_STATE   = 'your-slug-gamestate';
 
 export default function YourQuiz() {
-  // Restore from localStorage on load
-  const [guessed, setGuessed] = useState<Set<string>>(() => { ... });
-  const [gameState, setGameState] = useState<GameState>(() => { ... });
+  const [guessed, setGuessed] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const saved = localStorage.getItem(LS_GUESSED);
+      return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
+    } catch { return new Set(); }
+  });
+  const [gameState, setGameState] = useState<GameState>(() => {
+    if (typeof window === 'undefined') return 'playing';
+    try { return (localStorage.getItem(LS_STATE) as GameState) || 'playing'; }
+    catch { return 'playing'; }
+  });
 
-  // Persist to localStorage on change
-  useEffect(() => { localStorage.setItem(LS_GUESSED, JSON.stringify(Array.from(guessed))); }, [guessed]);
-  useEffect(() => { localStorage.setItem(LS_STATE, gameState); }, [gameState]);
+  useEffect(() => {
+    try { localStorage.setItem(LS_GUESSED, JSON.stringify(Array.from(guessed))); }
+    catch { /* ignore */ }
+  }, [guessed]);
+
+  useEffect(() => {
+    try { localStorage.setItem(LS_STATE, gameState); }
+    catch { /* ignore */ }
+  }, [gameState]);
 
   // handleSubmit, handleGiveUp, handleReset ...
 
-  return ( /* numbered grid, input, Give Up / Play Again / Reset buttons */ );
+  return (
+    <div className="min-h-screen bg-white px-8 py-8">
+      <Link href="/">← All Quizzes</Link>
+      {/* title, counter, input, buttons */}
+
+      {/* Table grid — spreadsheet style */}
+      <table className="border-collapse text-sm">
+        <tbody>
+          {ITEMS.map((item, i) => {
+            const isGuessed = guessed.has(item);
+            const isMissed  = isOver && !isGuessed;
+            return (
+              <tr key={item}>
+                <td className="border border-black bg-gray-50 text-gray-500 px-2 py-1 text-right w-10 select-none">
+                  {i + 1}.
+                </td>
+                <td className={`border border-black px-3 py-1 w-48 ${
+                  isGuessed ? 'bg-green-100 text-green-800 font-medium'
+                  : isMissed ? 'bg-red-100 text-red-700'
+                  : 'bg-gray-100 text-gray-100 select-none'
+                }`}>
+                  {isGuessed || isMissed ? item : '\u00A0'}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 ```
 
+For quizzes that show a prompt (like capitals), add a third column for the answer and keep the prompt column always visible (see `us-capitals/page.tsx`).
+
 ### 3. Register it on the hub
 
-Add an entry to the `quizzes` array in `quizzes/src/app/page.tsx`:
+Add a link to `quizzes/src/app/page.tsx`:
 
-```ts
-const quizzes = [
-  { slug: 'us-states',   title: 'US States',   description: '...', count: '50 states' },
-  { slug: 'us-capitals', title: 'US Capitals',  description: '...', count: '50 capitals' },
-  { slug: 'your-slug',   title: 'Your Quiz',    description: '...', count: 'N items' }, // ← add here
-];
+```tsx
+<li><Link href="/your-slug" className="text-blue-600 hover:underline">Your Quiz</Link></li>
 ```
-
-The hub renders a card linking to `/<slug>` automatically.
 
 ## Conventions
 
-- Pages are `'use client'` (all quiz interaction is client-side)
-- Use plain Tailwind — no DaisyUI or other UI frameworks
-- White background, dark text, black border on empty grid cells
-- Green (`bg-green-100 border-green-400 text-green-800`) for correct answers
-- Red (`bg-red-100 border-red-300 text-red-700`) for revealed/missed answers
-- localStorage keys are prefixed with the quiz slug to avoid collisions
-- Grid is numbered 1–N, alphabetical (or logical) order
+- Pages are `'use client'`
+- Plain Tailwind — no UI frameworks
+- White page background (`bg-white`)
+- Table grid with `border-collapse`, every cell has `border border-black`
+- Number column: `bg-gray-50`, narrow, right-aligned
+- Empty answer cell: `bg-gray-100`, text hidden (`text-gray-100`)
+- Correct: `bg-green-100 text-green-800`
+- Missed/revealed: `bg-red-100 text-red-700`
+- localStorage keys prefixed with quiz slug to avoid collisions
