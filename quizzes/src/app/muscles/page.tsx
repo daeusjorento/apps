@@ -2,16 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { US_STATES } from '@/lib/states';
-import { STATE_CAPITALS, matchCapital } from '@/lib/capitals';
+import { MUSCLES, matchMuscle } from '@/lib/muscles';
 
 type GameState = 'playing' | 'given-up' | 'complete';
+const TOTAL = MUSCLES.length;
 
-export default function USCapitalsQuiz() {
+export default function MusclesQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('us-capitals-guessed');
+      const saved = localStorage.getItem('muscles-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -20,7 +20,7 @@ export default function USCapitalsQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('us-capitals-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('muscles-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,12 +30,12 @@ export default function USCapitalsQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('us-capitals-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('muscles-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('us-capitals-gamestate', gameState); }
+    try { localStorage.setItem('muscles-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -44,12 +44,12 @@ export default function USCapitalsQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matchedState = matchCapital(val);
-    if (matchedState && !guessed.has(matchedState)) {
-      const next = new Set(guessed).add(matchedState);
+    const matched = matchMuscle(val);
+    if (matched && !guessed.has(matched)) {
+      const next = new Set(guessed).add(matched);
       setGuessed(next);
       setInput('');
-      if (next.size === 50) setGameState('complete');
+      if (next.size === TOTAL) setGameState('complete');
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 500);
@@ -60,8 +60,8 @@ export default function USCapitalsQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('us-capitals-guessed');
-      localStorage.removeItem('us-capitals-gamestate');
+      localStorage.removeItem('muscles-guessed');
+      localStorage.removeItem('muscles-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -78,11 +78,11 @@ export default function USCapitalsQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">US Capitals</h1>
-      <p className="text-gray-500 text-sm mb-4">Type a capital city and press Enter</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Muscles of the Human Body</h1>
+      <p className="text-gray-500 text-sm mb-4">Type a muscle name and press Enter</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
-        {score}<span className="text-gray-400 font-normal">/50</span>
+        {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
       </div>
 
       {gameState === 'playing' && (
@@ -92,7 +92,7 @@ export default function USCapitalsQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a capital city..."
+            placeholder="Type a muscle name..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -103,8 +103,8 @@ export default function USCapitalsQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You got all 50 capitals!</p>}
-      {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of 50.</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} muscles!</p>}
+      {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
         {gameState === 'playing' && (
@@ -124,28 +124,24 @@ export default function USCapitalsQuiz() {
 
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
-          {US_STATES.map((state, i) => {
-            const isGuessed = guessed.has(state);
+          {MUSCLES.map((muscle, i) => {
+            const isGuessed = guessed.has(muscle);
             const isMissed = isOver && !isGuessed;
-            const capital = STATE_CAPITALS[state];
             return (
-              <tr key={state}>
+              <tr key={muscle}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
-                </td>
-                <td style={{ border: '1px solid black', padding: '4px 8px', width: '160px', background: '#f9fafb', color: '#374151' }}>
-                  {state}
                 </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '160px',
+                  width: '260px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? capital : '\u00A0'}
+                  {isGuessed || isMissed ? muscle : '\u00A0'}
                 </td>
               </tr>
             );

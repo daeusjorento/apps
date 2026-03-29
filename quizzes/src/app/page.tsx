@@ -7,6 +7,9 @@ export default function HubPage() {
       <ul className="space-y-2">
         <li><Link href="/us-states" className="text-blue-600 hover:underline">US States</Link></li>
         <li><Link href="/us-capitals" className="text-blue-600 hover:underline">US Capitals</Link></li>
+        <li><Link href="/us-presidents" className="text-blue-600 hover:underline">US Presidents</Link></li>
+        <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
+        <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
       </ul>
     </div>
   );

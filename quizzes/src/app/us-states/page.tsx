@@ -121,21 +121,25 @@ export default function USStatesQuiz() {
         </button>
       </div>
 
-      <table className="border-collapse text-sm">
+      <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
           {US_STATES.map((state, i) => {
             const isGuessed = guessed.has(state);
             const isMissed = isOver && !isGuessed;
             return (
               <tr key={state}>
-                <td className="border border-black bg-gray-50 text-gray-500 px-2 py-1 text-right w-10 select-none">
+                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
                 </td>
-                <td className={`border border-black px-3 py-1 w-48 ${
-                  isGuessed ? 'bg-green-100 text-green-800 font-medium'
-                  : isMissed ? 'bg-red-100 text-red-700'
-                  : 'bg-gray-100 text-gray-100 select-none'
-                }`}>
+                <td style={{
+                  border: '1px solid black',
+                  padding: '4px 8px',
+                  width: '192px',
+                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                  fontWeight: isGuessed ? 500 : 'normal',
+                  userSelect: 'none',
+                }}>
                   {isGuessed || isMissed ? state : '\u00A0'}
                 </td>
               </tr>
