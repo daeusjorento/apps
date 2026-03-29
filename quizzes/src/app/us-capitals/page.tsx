@@ -2,15 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { US_STATES, normalizeGuess } from '@/lib/states';
+import { US_STATES } from '@/lib/states';
+import { STATE_CAPITALS, matchCapital } from '@/lib/capitals';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 
-export default function USStatesQuiz() {
+export default function USCapitalsQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('us-states-guessed');
+      const saved = localStorage.getItem('us-capitals-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -19,7 +20,7 @@ export default function USStatesQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('us-states-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('us-capitals-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,13 +31,13 @@ export default function USStatesQuiz() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('us-states-guessed', JSON.stringify(Array.from(guessed)));
+      localStorage.setItem('us-capitals-guessed', JSON.stringify(Array.from(guessed)));
     } catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('us-states-gamestate', gameState);
+      localStorage.setItem('us-capitals-gamestate', gameState);
     } catch { /* ignore */ }
   }, [gameState]);
 
@@ -46,9 +47,9 @@ export default function USStatesQuiz() {
     const val = input.trim();
     if (!val) return;
 
-    const matched = normalizeGuess(val);
-    if (matched && !guessed.has(matched)) {
-      const next = new Set(guessed).add(matched);
+    const matchedState = matchCapital(val);
+    if (matchedState && !guessed.has(matchedState)) {
+      const next = new Set(guessed).add(matchedState);
       setGuessed(next);
       setInput('');
       if (next.size === 50) setGameState('complete');
@@ -62,8 +63,8 @@ export default function USStatesQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('us-states-guessed');
-      localStorage.removeItem('us-states-gamestate');
+      localStorage.removeItem('us-capitals-guessed');
+      localStorage.removeItem('us-capitals-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -82,11 +83,11 @@ export default function USStatesQuiz() {
         </Link>
       </div>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-1">US States</h1>
-      <p className="text-gray-400 text-sm mb-5">Type a state name and press Enter</p>
+      <h1 className="text-3xl font-bold text-gray-900 mb-1">US Capitals</h1>
+      <p className="text-gray-400 text-sm mb-5">Type a capital city and press Enter</p>
 
       <div className="text-2xl font-bold text-gray-800 mb-4 tabular-nums">
-        {score}<span className="text-gray-400 font-normal text-lg">/50 states</span>
+        {score}<span className="text-gray-400 font-normal text-lg">/50 capitals</span>
       </div>
 
       {gameState === 'playing' && (
@@ -96,7 +97,7 @@ export default function USStatesQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a state name..."
+            placeholder="Type a capital city..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -108,7 +109,7 @@ export default function USStatesQuiz() {
       )}
 
       {gameState === 'complete' && (
-        <p className="text-green-600 font-semibold mb-4">🎉 You got all 50 states!</p>
+        <p className="text-green-600 font-semibold mb-4">🎉 You got all 50 capitals!</p>
       )}
       {gameState === 'given-up' && (
         <p className="text-gray-500 mb-4">
@@ -132,10 +133,12 @@ export default function USStatesQuiz() {
         </button>
       </div>
 
+      {/* Grid: numbered 1-50 alphabetically by state, shows State → Capital */}
       <div className="w-full max-w-2xl grid grid-cols-5 gap-1.5">
         {US_STATES.map((state, i) => {
           const isGuessed = guessed.has(state);
           const isMissed = isOver && !isGuessed;
+          const capital = STATE_CAPITALS[state];
           return (
             <div
               key={state}
@@ -150,10 +153,15 @@ export default function USStatesQuiz() {
               }`}>
                 {i + 1}
               </span>
-              <span className={`block text-[10px] font-semibold leading-tight mt-2 ${
-                isGuessed ? 'text-green-800' : isMissed ? 'text-red-700' : 'text-white select-none'
+              <span className={`block text-[9px] font-semibold leading-tight mt-2 ${
+                isGuessed ? 'text-green-700' : isMissed ? 'text-red-600' : 'text-black'
               }`}>
-                {isGuessed || isMissed ? state : '\u00A0'}
+                {state}
+              </span>
+              <span className={`block text-[9px] leading-tight ${
+                isGuessed ? 'text-green-800 font-bold' : isMissed ? 'text-red-700' : 'text-gray-300'
+              }`}>
+                {isGuessed || isMissed ? capital : '?'}
               </span>
             </div>
           );

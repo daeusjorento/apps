@@ -7,6 +7,12 @@ const quizzes = [
     description: 'Can you name all 50 US states from memory?',
     count: '50 states',
   },
+  {
+    slug: 'us-capitals',
+    title: 'US Capitals',
+    description: 'Match each state to its capital city.',
+    count: '50 capitals',
+  },
 ];
 
 export default function HubPage() {
@@ -15,7 +21,7 @@ export default function HubPage() {
       <h1 className="text-4xl font-bold text-gray-900 mb-2">Quiz Hub</h1>
       <p className="text-gray-500 mb-12 text-base">Pick a quiz and test your knowledge</p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-3xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-2xl">
         {quizzes.map(q => (
           <Link
             key={q.slug}
