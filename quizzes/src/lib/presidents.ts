@@ -48,6 +48,24 @@ export const PRESIDENTS: string[] = [
   'Donald Trump',           // 47
 ];
 
+// Nicknames and abbreviations: alias → array of 0-based indices
+const ALIASES: Record<string, number[]> = {
+  'abe':       [15],  // Abraham Lincoln
+  'honest abe': [15],
+  'teddy':     [25],  // Theodore Roosevelt
+  'fdr':       [31],  // Franklin D. Roosevelt
+  'ike':       [33],  // Dwight D. Eisenhower
+  'jfk':       [34],  // John F. Kennedy
+  'lbj':       [35],  // Lyndon B. Johnson
+  'tricky dick': [36], // Richard Nixon
+  'dubya':     [42],  // George W. Bush
+  'george w':  [42],  // George W. Bush (disambiguation)
+  'george hw': [40],  // George H.W. Bush
+  'george h w': [40],
+  'bush sr':   [40],
+  'bush jr':   [42],
+};
+
 // Build reverse lookup: normalized guess → array of 0-based indices
 function buildLookup(): Map<string, number[]> {
   const map = new Map<string, number[]>();
@@ -58,11 +76,14 @@ function buildLookup(): Map<string, number[]> {
   }
 
   PRESIDENTS.forEach((name, i) => {
-    // Full name match
     add(name.toLowerCase(), i);
-    // Last name match (last word)
     const lastName = name.split(' ').pop()!.toLowerCase();
     add(lastName, i);
+  });
+
+  // Merge in manual aliases
+  Object.entries(ALIASES).forEach(([alias, indices]) => {
+    map.set(alias, indices);
   });
 
   return map;
@@ -72,9 +93,7 @@ const LOOKUP = buildLookup();
 
 /**
  * Returns 0-based indices of all matching presidents.
- * Matches on full name or last name, case insensitive.
- * Multiple indices for presidents with shared last names (Adams, Harrison,
- * Johnson, Roosevelt, Bush, Cleveland, Trump).
+ * Matches on full name, last name, or known nickname/abbreviation.
  */
 export function matchPresident(guess: string): number[] {
   return LOOKUP.get(guess.trim().toLowerCase()) ?? [];

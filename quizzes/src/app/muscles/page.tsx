@@ -79,7 +79,7 @@ export default function MusclesQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">Muscles of the Human Body</h1>
-      <p className="text-gray-500 text-sm mb-4">Type a muscle name and press Enter</p>
+      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major muscle groups — common names accepted</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>

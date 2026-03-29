@@ -56,10 +56,16 @@ const CAPITALS_REVERSE = new Map(
   Object.entries(STATE_CAPITALS).map(([state, cap]) => [cap.toLowerCase(), state])
 );
 
-/**
- * Given a typed capital guess, returns the matching state name if correct
- * and not yet guessed, or null otherwise.
- */
+// Alternate accepted spellings / abbreviations
+const ALTERNATES: [string, string][] = [
+  // Saint Paul, MN
+  ['st. paul', 'Minnesota'],
+  ['st paul',  'Minnesota'],
+  // Montpelier, VT — common misspelling with double-l
+  ['montpellier', 'Vermont'],
+];
+ALTERNATES.forEach(([alias, state]) => CAPITALS_REVERSE.set(alias, state));
+
 export function matchCapital(guess: string): string | null {
   return CAPITALS_REVERSE.get(guess.trim().toLowerCase()) ?? null;
 }
