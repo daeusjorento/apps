@@ -33,7 +33,7 @@ export default function USStatesQuiz() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('us-states-guessed', JSON.stringify([...guessed]));
+      localStorage.setItem('us-states-guessed', JSON.stringify(Array.from(guessed)));
     } catch { /* ignore */ }
   }, [guessed]);
 
