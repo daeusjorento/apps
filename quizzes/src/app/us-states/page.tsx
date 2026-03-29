@@ -10,14 +10,37 @@ const USMap = dynamic(() => import('@/components/USMap'), { ssr: false });
 type GameState = 'playing' | 'given-up' | 'complete';
 
 export default function USStatesQuiz() {
-  const [guessed, setGuessed] = useState<Set<string>>(new Set());
+  const [guessed, setGuessed] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set();
+    try {
+      const saved = localStorage.getItem('us-states-guessed');
+      return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
+    } catch { return new Set(); }
+  });
   const [input, setInput] = useState('');
   const [shake, setShake] = useState(false);
-  const [gameState, setGameState] = useState<GameState>('playing');
+  const [gameState, setGameState] = useState<GameState>(() => {
+    if (typeof window === 'undefined') return 'playing';
+    try {
+      return (localStorage.getItem('us-states-gamestate') as GameState) || 'playing';
+    } catch { return 'playing'; }
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (gameState === 'playing') inputRef.current?.focus();
+  }, [gameState]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('us-states-guessed', JSON.stringify([...guessed]));
+    } catch { /* ignore */ }
+  }, [guessed]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('us-states-gamestate', gameState);
+    } catch { /* ignore */ }
   }, [gameState]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,6 +64,10 @@ export default function USStatesQuiz() {
   const handleGiveUp = () => setGameState('given-up');
 
   const handleReset = () => {
+    try {
+      localStorage.removeItem('us-states-guessed');
+      localStorage.removeItem('us-states-gamestate');
+    } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
     setGameState('playing');
@@ -115,6 +142,12 @@ export default function USStatesQuiz() {
             Play Again
           </button>
         )}
+        <button
+          onClick={handleReset}
+          className="px-4 py-2 rounded-lg border border-gray-300 text-gray-500 text-sm font-medium hover:bg-gray-50 transition-colors"
+        >
+          Reset
+        </button>
       </div>
 
       {/* Grid + Map */}
