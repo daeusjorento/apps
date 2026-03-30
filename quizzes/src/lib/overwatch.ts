@@ -37,8 +37,8 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Vendetta',      accept: ['vendetta'] },
   { name: 'Venture',       accept: ['venture', 'dr. evans'] },
   { name: 'Widowmaker',    accept: ['widowmaker', 'widow', 'amelie lacroix'] },
-  { name: 'Wuyang',        accept: ['wuyang'] },
   // Support
+  { name: 'Wuyang',        accept: ['wuyang'] },
   { name: 'Ana',           accept: ['ana', 'ana amari'] },
   { name: 'Baptiste',      accept: ['baptiste', 'bap', 'jean-baptiste augustin'] },
   { name: 'Brigitte',      accept: ['brigitte', 'brig', 'brigitte lindholm'] },
@@ -66,11 +66,11 @@ export const OW_SECTIONS: { header: string; heroes: string[] }[] = [
   },
   {
     header: 'Damage',
-    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker', 'Wuyang'],
+    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker'],
   },
   {
     header: 'Support',
-    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Zenyatta'],
+    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Wuyang', 'Zenyatta'],
   },
 ];
 
