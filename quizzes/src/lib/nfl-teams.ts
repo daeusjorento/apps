@@ -38,6 +38,17 @@ NFL_TEAM_DATA.forEach(t => t.accept.forEach(a => NFL_MAP.set(a, t.name)));
 
 export const NFL_TEAMS = NFL_TEAM_DATA.map(t => t.name);
 
+export const NFL_SECTIONS: { header: string; teams: string[] }[] = [
+  { header: 'AFC East',  teams: ['Buffalo Bills', 'Miami Dolphins', 'New England Patriots', 'New York Jets'] },
+  { header: 'AFC North', teams: ['Baltimore Ravens', 'Cincinnati Bengals', 'Cleveland Browns', 'Pittsburgh Steelers'] },
+  { header: 'AFC South', teams: ['Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars', 'Tennessee Titans'] },
+  { header: 'AFC West',  teams: ['Denver Broncos', 'Kansas City Chiefs', 'Las Vegas Raiders', 'Los Angeles Chargers'] },
+  { header: 'NFC East',  teams: ['Dallas Cowboys', 'New York Giants', 'Philadelphia Eagles', 'Washington Commanders'] },
+  { header: 'NFC North', teams: ['Chicago Bears', 'Detroit Lions', 'Green Bay Packers', 'Minnesota Vikings'] },
+  { header: 'NFC South', teams: ['Atlanta Falcons', 'Carolina Panthers', 'New Orleans Saints', 'Tampa Bay Buccaneers'] },
+  { header: 'NFC West',  teams: ['Arizona Cardinals', 'Los Angeles Rams', 'San Francisco 49ers', 'Seattle Seahawks'] },
+];
+
 export function matchNFLTeam(guess: string): string | null {
   return NFL_MAP.get(guess.trim().toLowerCase()) ?? null;
 }

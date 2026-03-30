@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { US_CITIES, matchCity } from '@/lib/us-cities';
+// City.state is kept in data for "city, state" accept aliases but not displayed
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = US_CITIES.length;
@@ -124,7 +125,7 @@ export default function USCitiesQuiz() {
 
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
-          {US_CITIES.map(({ name, state }, i) => {
+          {US_CITIES.map(({ name }, i) => {
             const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
@@ -132,13 +133,10 @@ export default function USCitiesQuiz() {
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
                 </td>
-                <td style={{ border: '1px solid black', padding: '4px 8px', width: '120px', background: '#f9fafb', color: '#374151' }}>
-                  {state}
-                </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '160px',
+                  width: '180px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',

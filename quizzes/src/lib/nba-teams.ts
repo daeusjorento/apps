@@ -36,6 +36,15 @@ NBA_TEAM_DATA.forEach(t => t.accept.forEach(a => NBA_MAP.set(a, t.name)));
 
 export const NBA_TEAMS = NBA_TEAM_DATA.map(t => t.name);
 
+export const NBA_SECTIONS: { header: string; teams: string[] }[] = [
+  { header: 'Atlantic',  teams: ['Boston Celtics', 'Brooklyn Nets', 'New York Knicks', 'Philadelphia 76ers', 'Toronto Raptors'] },
+  { header: 'Central',   teams: ['Chicago Bulls', 'Cleveland Cavaliers', 'Detroit Pistons', 'Indiana Pacers', 'Milwaukee Bucks'] },
+  { header: 'Southeast', teams: ['Atlanta Hawks', 'Charlotte Hornets', 'Miami Heat', 'Orlando Magic', 'Washington Wizards'] },
+  { header: 'Northwest', teams: ['Denver Nuggets', 'Minnesota Timberwolves', 'Oklahoma City Thunder', 'Portland Trail Blazers', 'Utah Jazz'] },
+  { header: 'Pacific',   teams: ['Golden State Warriors', 'Los Angeles Clippers', 'Los Angeles Lakers', 'Phoenix Suns', 'Sacramento Kings'] },
+  { header: 'Southwest', teams: ['Dallas Mavericks', 'Houston Rockets', 'Memphis Grizzlies', 'New Orleans Pelicans', 'San Antonio Spurs'] },
+];
+
 export function matchNBATeam(guess: string): string | null {
   return NBA_MAP.get(guess.trim().toLowerCase()) ?? null;
 }

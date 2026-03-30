@@ -2,27 +2,27 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { NFL_TEAMS, NFL_SECTIONS, matchNFLTeam } from '@/lib/nfl-teams';
+import { EMOTIONS, EMOTION_SECTIONS, matchEmotion } from '@/lib/emotion-wheel';
 
 type GameState = 'playing' | 'given-up' | 'complete';
-const TOTAL = NFL_TEAMS.length;
+const TOTAL = EMOTIONS.length;
 
 type TableRow =
   | { type: 'header'; text: string }
-  | { type: 'team'; name: string; index: number };
+  | { type: 'emotion'; name: string; index: number };
 
 const TABLE_ROWS: TableRow[] = [];
 let _idx = 0;
-NFL_SECTIONS.forEach(s => {
+EMOTION_SECTIONS.forEach(s => {
   TABLE_ROWS.push({ type: 'header', text: s.header });
-  s.teams.forEach(name => TABLE_ROWS.push({ type: 'team', name, index: _idx++ }));
+  s.emotions.forEach(name => TABLE_ROWS.push({ type: 'emotion', name, index: _idx++ }));
 });
 
-export default function NFLTeamsQuiz() {
+export default function EmotionWheelQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('nfl-teams-guessed');
+      const saved = localStorage.getItem('emotion-wheel-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -31,7 +31,7 @@ export default function NFLTeamsQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('nfl-teams-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('emotion-wheel-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,12 +41,12 @@ export default function NFLTeamsQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('nfl-teams-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('emotion-wheel-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('nfl-teams-gamestate', gameState); }
+    try { localStorage.setItem('emotion-wheel-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -55,7 +55,7 @@ export default function NFLTeamsQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matched = matchNFLTeam(val);
+    const matched = matchEmotion(val);
     if (matched && !guessed.has(matched)) {
       const next = new Set(guessed).add(matched);
       setGuessed(next);
@@ -71,8 +71,8 @@ export default function NFLTeamsQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('nfl-teams-guessed');
-      localStorage.removeItem('nfl-teams-gamestate');
+      localStorage.removeItem('emotion-wheel-guessed');
+      localStorage.removeItem('emotion-wheel-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -89,8 +89,8 @@ export default function NFLTeamsQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">NFL Teams</h1>
-      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} NFL teams — city, nickname, or both accepted</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Plutchik&apos;s Emotion Wheel</h1>
+      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} emotions across 3 rings of intensity</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -103,7 +103,7 @@ export default function NFLTeamsQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a team name..."
+            placeholder="Type an emotion..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -114,7 +114,7 @@ export default function NFLTeamsQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} NFL teams!</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} emotions!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
@@ -155,7 +155,7 @@ export default function NFLTeamsQuiz() {
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '220px',
+                  width: '160px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',

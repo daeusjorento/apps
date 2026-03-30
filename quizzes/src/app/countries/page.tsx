@@ -2,11 +2,21 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { COUNTRIES, matchCountry } from '@/lib/countries';
+import { COUNTRIES, COUNTRY_SECTIONS, matchCountry } from '@/lib/countries';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = COUNTRIES.length;
-const SORTED = [...COUNTRIES].sort((a, b) => a.localeCompare(b));
+
+type TableRow =
+  | { type: 'header'; text: string }
+  | { type: 'country'; name: string; continent: string; index: number };
+
+const TABLE_ROWS: TableRow[] = [];
+let _idx = 0;
+COUNTRY_SECTIONS.forEach(s => {
+  TABLE_ROWS.push({ type: 'header', text: s.header });
+  s.countries.forEach(name => TABLE_ROWS.push({ type: 'country', name, continent: s.header, index: _idx++ }));
+});
 
 export default function CountriesQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -125,24 +135,36 @@ export default function CountriesQuiz() {
 
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
-          {SORTED.map((country, i) => {
-            const isGuessed = guessed.has(country);
+          {TABLE_ROWS.map(row => {
+            if (row.type === 'header') {
+              return (
+                <tr key={`h-${row.text}`}>
+                  <td colSpan={3} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                    {row.text}
+                  </td>
+                </tr>
+              );
+            }
+            const isGuessed = guessed.has(row.name);
             const isMissed = isOver && !isGuessed;
             return (
-              <tr key={country}>
+              <tr key={row.name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
+                  {row.index + 1}.
+                </td>
+                <td style={{ border: '1px solid black', padding: '4px 8px', width: '120px', background: '#f9fafb', color: '#6b7280', fontSize: '12px' }}>
+                  {row.continent}
                 </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '240px',
+                  width: '220px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? country : '\u00A0'}
+                  {isGuessed || isMissed ? row.name : '\u00A0'}
                 </td>
               </tr>
             );
