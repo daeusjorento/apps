@@ -20,6 +20,7 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Cassidy',       accept: ['cassidy', 'mccree', 'cole cassidy', 'jesse mccree'] },
   { name: 'Echo',          accept: ['echo'] },
   { name: 'Anran',         accept: ['anran'] },
+  { name: 'Emre',          accept: ['emre'] },
   { name: 'Freja',         accept: ['freja'] },
   { name: 'Genji',         accept: ['genji', 'genji shimada'] },
   { name: 'Hanzo',         accept: ['hanzo', 'hanzo shimada'] },
@@ -41,7 +42,6 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Ana',           accept: ['ana', 'ana amari'] },
   { name: 'Baptiste',      accept: ['baptiste', 'bap', 'jean-baptiste augustin'] },
   { name: 'Brigitte',      accept: ['brigitte', 'brig', 'brigitte lindholm'] },
-  { name: 'Emre',          accept: ['emre'] },
   { name: 'Illari',        accept: ['illari', 'illari quispe huanca'] },
   { name: 'Jetpack Cat',   accept: ['jetpack cat', 'jetpackcat'] },
   { name: 'Juno',          accept: ['juno'] },
@@ -66,11 +66,11 @@ export const OW_SECTIONS: { header: string; heroes: string[] }[] = [
   },
   {
     header: 'Damage',
-    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker', 'Wuyang'],
+    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker', 'Wuyang'],
   },
   {
     header: 'Support',
-    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Emre', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Zenyatta'],
+    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Zenyatta'],
   },
 ];
 
