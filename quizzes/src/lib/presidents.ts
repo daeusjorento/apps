@@ -1,72 +1,76 @@
-export const PRESIDENTS: string[] = [
-  'George Washington',      // 1
-  'John Adams',             // 2
-  'Thomas Jefferson',       // 3
-  'James Madison',          // 4
-  'James Monroe',           // 5
-  'John Quincy Adams',      // 6
-  'Andrew Jackson',         // 7
-  'Martin Van Buren',       // 8
-  'William Henry Harrison', // 9
-  'John Tyler',             // 10
-  'James K. Polk',          // 11
-  'Zachary Taylor',         // 12
-  'Millard Fillmore',       // 13
-  'Franklin Pierce',        // 14
-  'James Buchanan',         // 15
-  'Abraham Lincoln',        // 16
-  'Andrew Johnson',         // 17
-  'Ulysses S. Grant',       // 18
-  'Rutherford B. Hayes',    // 19
-  'James A. Garfield',      // 20
-  'Chester A. Arthur',      // 21
-  'Grover Cleveland',       // 22
-  'Benjamin Harrison',      // 23
-  'Grover Cleveland',       // 24
-  'William McKinley',       // 25
-  'Theodore Roosevelt',     // 26
-  'William Howard Taft',    // 27
-  'Woodrow Wilson',         // 28
-  'Warren G. Harding',      // 29
-  'Calvin Coolidge',        // 30
-  'Herbert Hoover',         // 31
-  'Franklin D. Roosevelt',  // 32
-  'Harry S. Truman',        // 33
-  'Dwight D. Eisenhower',   // 34
-  'John F. Kennedy',        // 35
-  'Lyndon B. Johnson',      // 36
-  'Richard Nixon',          // 37
-  'Gerald Ford',            // 38
-  'Jimmy Carter',           // 39
-  'Ronald Reagan',          // 40
-  'George H.W. Bush',       // 41
-  'Bill Clinton',           // 42
-  'George W. Bush',         // 43
-  'Barack Obama',           // 44
-  'Donald Trump',           // 45
-  'Joe Biden',              // 46
-  'Donald Trump',           // 47
+export interface President {
+  name: string;
+  years: string;
+}
+
+export const PRESIDENTS: President[] = [
+  { name: 'George Washington',      years: '1789–1797' },
+  { name: 'John Adams',             years: '1797–1801' },
+  { name: 'Thomas Jefferson',       years: '1801–1809' },
+  { name: 'James Madison',          years: '1809–1817' },
+  { name: 'James Monroe',           years: '1817–1825' },
+  { name: 'John Quincy Adams',      years: '1825–1829' },
+  { name: 'Andrew Jackson',         years: '1829–1837' },
+  { name: 'Martin Van Buren',       years: '1837–1841' },
+  { name: 'William Henry Harrison', years: '1841' },
+  { name: 'John Tyler',             years: '1841–1845' },
+  { name: 'James K. Polk',          years: '1845–1849' },
+  { name: 'Zachary Taylor',         years: '1849–1850' },
+  { name: 'Millard Fillmore',       years: '1850–1853' },
+  { name: 'Franklin Pierce',        years: '1853–1857' },
+  { name: 'James Buchanan',         years: '1857–1861' },
+  { name: 'Abraham Lincoln',        years: '1861–1865' },
+  { name: 'Andrew Johnson',         years: '1865–1869' },
+  { name: 'Ulysses S. Grant',       years: '1869–1877' },
+  { name: 'Rutherford B. Hayes',    years: '1877–1881' },
+  { name: 'James A. Garfield',      years: '1881' },
+  { name: 'Chester A. Arthur',      years: '1881–1885' },
+  { name: 'Grover Cleveland',       years: '1885–1889' },
+  { name: 'Benjamin Harrison',      years: '1889–1893' },
+  { name: 'Grover Cleveland',       years: '1893–1897' },
+  { name: 'William McKinley',       years: '1897–1901' },
+  { name: 'Theodore Roosevelt',     years: '1901–1909' },
+  { name: 'William Howard Taft',    years: '1909–1913' },
+  { name: 'Woodrow Wilson',         years: '1913–1921' },
+  { name: 'Warren G. Harding',      years: '1921–1923' },
+  { name: 'Calvin Coolidge',        years: '1923–1929' },
+  { name: 'Herbert Hoover',         years: '1929–1933' },
+  { name: 'Franklin D. Roosevelt',  years: '1933–1945' },
+  { name: 'Harry S. Truman',        years: '1945–1953' },
+  { name: 'Dwight D. Eisenhower',   years: '1953–1961' },
+  { name: 'John F. Kennedy',        years: '1961–1963' },
+  { name: 'Lyndon B. Johnson',      years: '1963–1969' },
+  { name: 'Richard Nixon',          years: '1969–1974' },
+  { name: 'Gerald Ford',            years: '1974–1977' },
+  { name: 'Jimmy Carter',           years: '1977–1981' },
+  { name: 'Ronald Reagan',          years: '1981–1989' },
+  { name: 'George H.W. Bush',       years: '1989–1993' },
+  { name: 'Bill Clinton',           years: '1993–2001' },
+  { name: 'George W. Bush',         years: '2001–2009' },
+  { name: 'Barack Obama',           years: '2009–2017' },
+  { name: 'Donald Trump',           years: '2017–2021' },
+  { name: 'Joe Biden',              years: '2021–2025' },
+  { name: 'Donald Trump',           years: '2025–' },
 ];
 
 // Nicknames and abbreviations: alias → array of 0-based indices
 const ALIASES: Record<string, number[]> = {
-  'abe':       [15],  // Abraham Lincoln
-  'honest abe': [15],
-  'teddy':     [25],  // Theodore Roosevelt
-  'fdr':       [31],  // Franklin D. Roosevelt
-  'ike':       [33],  // Dwight D. Eisenhower
-  'jfk':       [34],  // John F. Kennedy
-  'lbj':       [35],  // Lyndon B. Johnson
-  'tricky dick': [36], // Richard Nixon
-  'dubya':     [42],  // George W. Bush
-  'george w':  [42],  // George W. Bush (disambiguation)
-  'george hw': [40],  // George H.W. Bush
-  'george h w': [40],
-  'bush sr':   [40],
-  'bush jr':   [42],
+  'abe':          [15],
+  'honest abe':   [15],
+  'teddy':        [25],
+  'fdr':          [31],
+  'ike':          [33],
+  'jfk':          [34],
+  'lbj':          [35],
+  'tricky dick':  [36],
+  'dubya':        [42],
+  'george w':     [42],
+  'george hw':    [40],
+  'george h w':   [40],
+  'bush sr':      [40],
+  'bush jr':      [42],
 };
 
-// Build reverse lookup: normalized guess → array of 0-based indices
 function buildLookup(): Map<string, number[]> {
   const map = new Map<string, number[]>();
 
@@ -75,26 +79,18 @@ function buildLookup(): Map<string, number[]> {
     map.get(key)!.push(index);
   }
 
-  PRESIDENTS.forEach((name, i) => {
+  PRESIDENTS.forEach(({ name }, i) => {
     add(name.toLowerCase(), i);
-    const lastName = name.split(' ').pop()!.toLowerCase();
-    add(lastName, i);
+    add(name.split(' ').pop()!.toLowerCase(), i);
   });
 
-  // Merge in manual aliases
-  Object.entries(ALIASES).forEach(([alias, indices]) => {
-    map.set(alias, indices);
-  });
+  Object.entries(ALIASES).forEach(([alias, indices]) => map.set(alias, indices));
 
   return map;
 }
 
 const LOOKUP = buildLookup();
 
-/**
- * Returns 0-based indices of all matching presidents.
- * Matches on full name, last name, or known nickname/abbreviation.
- */
 export function matchPresident(guess: string): number[] {
   return LOOKUP.get(guess.trim().toLowerCase()) ?? [];
 }

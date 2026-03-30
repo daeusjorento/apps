@@ -7,8 +7,12 @@ import { PRESIDENTS, matchPresident } from '@/lib/presidents';
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = PRESIDENTS.length; // 47
 
+// Pre-compute reversed display order with original indices
+const DISPLAY_ROWS = PRESIDENTS
+  .map((p, i) => ({ ...p, i }))
+  .reverse();
+
 export default function USPresidentsQuiz() {
-  // guessed stores 0-based index strings since president names aren't unique
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
@@ -45,7 +49,6 @@ export default function USPresidentsQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-
     const indices = matchPresident(val);
     const newIndices = indices.filter(idx => !guessed.has(String(idx)));
     if (newIndices.length > 0) {
@@ -83,7 +86,7 @@ export default function USPresidentsQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">US Presidents</h1>
-      <p className="text-gray-500 text-sm mb-4">Type a president's name (first + last, or last name) and press Enter</p>
+      <p className="text-gray-500 text-sm mb-4">Type a president's name (full name, last name, or nickname) and press Enter</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -128,13 +131,16 @@ export default function USPresidentsQuiz() {
 
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
-          {PRESIDENTS.map((name, i) => {
+          {DISPLAY_ROWS.map(({ name, years, i }) => {
             const isGuessed = guessed.has(String(i));
             const isMissed = isOver && !isGuessed;
             return (
               <tr key={i}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
+                </td>
+                <td style={{ border: '1px solid black', padding: '4px 8px', width: '90px', background: '#f9fafb', color: '#6b7280', textAlign: 'center' }}>
+                  {years}
                 </td>
                 <td style={{
                   border: '1px solid black',

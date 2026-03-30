@@ -2,10 +2,21 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { MUSCLES, matchMuscle } from '@/lib/muscles';
+import { MUSCLES, MUSCLE_SECTIONS, matchMuscle } from '@/lib/muscles';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = MUSCLES.length;
+
+type TableRow =
+  | { type: 'header'; text: string }
+  | { type: 'muscle'; name: string; index: number };
+
+const TABLE_ROWS: TableRow[] = [];
+let _idx = 0;
+MUSCLE_SECTIONS.forEach(s => {
+  TABLE_ROWS.push({ type: 'header', text: s.header });
+  s.muscles.forEach(name => TABLE_ROWS.push({ type: 'muscle', name, index: _idx++ }));
+});
 
 export default function MusclesQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -124,13 +135,22 @@ export default function MusclesQuiz() {
 
       <table style={{ borderCollapse: 'collapse' }}>
         <tbody>
-          {MUSCLES.map((muscle, i) => {
-            const isGuessed = guessed.has(muscle);
+          {TABLE_ROWS.map((row) => {
+            if (row.type === 'header') {
+              return (
+                <tr key={`h-${row.text}`}>
+                  <td colSpan={2} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                    {row.text}
+                  </td>
+                </tr>
+              );
+            }
+            const isGuessed = guessed.has(row.name);
             const isMissed = isOver && !isGuessed;
             return (
-              <tr key={muscle}>
+              <tr key={row.name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
+                  {row.index + 1}.
                 </td>
                 <td style={{
                   border: '1px solid black',
@@ -141,7 +161,7 @@ export default function MusclesQuiz() {
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? muscle : '\u00A0'}
+                  {isGuessed || isMissed ? row.name : '\u00A0'}
                 </td>
               </tr>
             );

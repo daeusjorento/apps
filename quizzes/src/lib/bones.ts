@@ -1,15 +1,18 @@
-// Each entry: canonical display name + every accepted guess (lowercase)
 const BONE_DATA: { name: string; accept: string[] }[] = [
   { name: 'Skull',           accept: ['skull', 'cranium', 'head bone', 'skull bone'] },
   { name: 'Jaw',             accept: ['jaw', 'mandible', 'jawbone', 'lower jaw'] },
   { name: 'Cheekbone',       accept: ['cheekbone', 'cheek bone', 'zygomatic', 'zygomatic bone', 'malar bone', 'malar'] },
-  { name: 'Collarbone',      accept: ['collarbone', 'collar bone', 'clavicle'] },
-  { name: 'Shoulder blade',  accept: ['shoulder blade', 'shoulderblade', 'scapula'] },
-  { name: 'Breastbone',      accept: ['breastbone', 'breast bone', 'sternum', 'chest bone'] },
-  { name: 'Ribs',            accept: ['ribs', 'rib', 'rib cage', 'ribcage', 'costae', 'costa'] },
+  { name: 'Nasal bone',      accept: ['nasal bone', 'nasal', 'nose bone', 'nose', 'nasal bones'] },
+  { name: 'Occipital bone',  accept: ['occipital bone', 'occipital', 'back of skull', 'base of skull'] },
+  { name: 'Frontal bone',    accept: ['frontal bone', 'frontal', 'forehead bone', 'forehead'] },
+  { name: 'Hyoid',           accept: ['hyoid', 'hyoid bone', 'throat bone', 'tongue bone', 'neck bone'] },
   { name: 'Spine',           accept: ['spine', 'backbone', 'back bone', 'vertebral column', 'vertebrae', 'vertebra', 'spinal column'] },
   { name: 'Sacrum',          accept: ['sacrum', 'sacral bone'] },
   { name: 'Tailbone',        accept: ['tailbone', 'tail bone', 'coccyx'] },
+  { name: 'Breastbone',      accept: ['breastbone', 'breast bone', 'sternum', 'chest bone'] },
+  { name: 'Ribs',            accept: ['ribs', 'rib', 'rib cage', 'ribcage', 'costae', 'costa'] },
+  { name: 'Collarbone',      accept: ['collarbone', 'collar bone', 'clavicle'] },
+  { name: 'Shoulder blade',  accept: ['shoulder blade', 'shoulderblade', 'scapula'] },
   { name: 'Pelvis',          accept: ['pelvis', 'hip bone', 'hipbone', 'hip', 'pelvic bone', 'pelvic girdle'] },
   { name: 'Humerus',         accept: ['humerus', 'upper arm bone', 'arm bone', 'upper arm'] },
   { name: 'Radius',          accept: ['radius', 'outer forearm bone', 'outer forearm'] },
@@ -25,16 +28,19 @@ const BONE_DATA: { name: string; accept: string[] }[] = [
   { name: 'Ankle bones',     accept: ['ankle bones', 'ankle bone', 'tarsals', 'tarsal bones', 'tarsal', 'ankle', 'anklebone'] },
   { name: 'Foot bones',      accept: ['foot bones', 'foot bone', 'metatarsals', 'metatarsal bones', 'metatarsal'] },
   { name: 'Toe bones',       accept: ['toe bones', 'toe bone', 'toes', 'toe phalanges', 'digital bones of foot'] },
-  { name: 'Hyoid',           accept: ['hyoid', 'hyoid bone', 'throat bone', 'tongue bone', 'neck bone'] },
-  { name: 'Nasal bone',      accept: ['nasal bone', 'nasal', 'nose bone', 'nose', 'nasal bones'] },
-  { name: 'Occipital bone',  accept: ['occipital bone', 'occipital', 'back of skull', 'base of skull'] },
-  { name: 'Frontal bone',    accept: ['frontal bone', 'frontal', 'forehead bone', 'forehead'] },
 ];
 
 const BONE_MAP = new Map<string, string>();
 BONE_DATA.forEach(b => b.accept.forEach(a => BONE_MAP.set(a, b.name)));
 
 export const BONES = BONE_DATA.map(b => b.name);
+
+export const BONE_SECTIONS: { header: string; bones: string[] }[] = [
+  { header: 'Skull & Face',  bones: ['Skull', 'Jaw', 'Cheekbone', 'Nasal bone', 'Occipital bone', 'Frontal bone', 'Hyoid'] },
+  { header: 'Spine & Torso', bones: ['Spine', 'Sacrum', 'Tailbone', 'Breastbone', 'Ribs', 'Collarbone', 'Shoulder blade', 'Pelvis'] },
+  { header: 'Arms & Hands',  bones: ['Humerus', 'Radius', 'Ulna', 'Wrist bones', 'Hand bones', 'Finger bones'] },
+  { header: 'Legs & Feet',   bones: ['Femur', 'Kneecap', 'Tibia', 'Fibula', 'Heel bone', 'Ankle bones', 'Foot bones', 'Toe bones'] },
+];
 
 export function matchBone(guess: string): string | null {
   return BONE_MAP.get(guess.trim().toLowerCase()) ?? null;
