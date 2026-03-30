@@ -18,8 +18,12 @@ export default function HubPage() {
         <li><Link href="/nba-teams" className="text-blue-600 hover:underline">NBA Teams</Link></li>
         <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
         <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
+        <li><Link href="/organs" className="text-blue-600 hover:underline">Human Organs</Link></li>
         <li><Link href="/the-wire" className="text-blue-600 hover:underline">The Wire Characters</Link></li>
         <li><Link href="/emotion-wheel" className="text-blue-600 hover:underline">Emotion Wheel</Link></li>
+        <li><Link href="/psychology-biases" className="text-blue-600 hover:underline">Psychology Biases</Link></li>
+        <li><Link href="/logical-fallacies" className="text-blue-600 hover:underline">Logical Fallacies</Link></li>
+        <li><Link href="/currencies" className="text-blue-600 hover:underline">World Currencies</Link></li>
       </ul>
     </div>
   );
