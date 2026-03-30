@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Name All 50 States',
-  description: 'Can you name all 50 US states from memory?',
+  title: 'Quiz Hub',
+  description: 'Memory quizzes — how many can you name from memory?',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
