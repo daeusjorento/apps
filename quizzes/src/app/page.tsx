@@ -24,6 +24,11 @@ export default function HubPage() {
         <li><Link href="/psychology-biases" className="text-blue-600 hover:underline">Psychology Biases</Link></li>
         <li><Link href="/logical-fallacies" className="text-blue-600 hover:underline">Logical Fallacies</Link></li>
         <li><Link href="/currencies" className="text-blue-600 hover:underline">World Currencies</Link></li>
+        <li><Link href="/overwatch" className="text-blue-600 hover:underline">Overwatch 2 Heroes</Link></li>
+        <li><Link href="/marvel-rivals" className="text-blue-600 hover:underline">Marvel Rivals Characters</Link></li>
+        <li><Link href="/seven-deadly-sins" className="text-blue-600 hover:underline">Seven Deadly Sins</Link></li>
+        <li><Link href="/elite-schools" className="text-blue-600 hover:underline">Ivy League &amp; NESCAC Schools</Link></li>
+        <li><Link href="/apple-varieties" className="text-blue-600 hover:underline">Apple Varieties</Link></li>
       </ul>
     </div>
   );
