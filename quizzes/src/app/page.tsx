@@ -16,6 +16,9 @@ export default function HubPage() {
         <li><Link href="/canada-provinces" className="text-blue-600 hover:underline">Canadian Provinces &amp; Territories</Link></li>
         <li><Link href="/nfl-teams" className="text-blue-600 hover:underline">NFL Teams</Link></li>
         <li><Link href="/nba-teams" className="text-blue-600 hover:underline">NBA Teams</Link></li>
+        <li><Link href="/mlb-teams" className="text-blue-600 hover:underline">MLB Teams</Link></li>
+        <li><Link href="/disney-movies" className="text-blue-600 hover:underline">Disney Animated Movies</Link></li>
+        <li><Link href="/ml-algorithms" className="text-blue-600 hover:underline">Machine Learning Algorithms</Link></li>
         <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
         <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
         <li><Link href="/organs" className="text-blue-600 hover:underline">Human Organs</Link></li>
