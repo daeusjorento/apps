@@ -28,7 +28,6 @@ export default function HubPage() {
         <li><Link href="/the-wire" className="text-blue-600 hover:underline">The Wire Characters</Link></li>
         <li><Link href="/red-rising" className="text-blue-600 hover:underline">Red Rising Characters</Link></li>
         <li><Link href="/lord-of-the-rings" className="text-blue-600 hover:underline">Lord of the Rings Characters</Link></li>
-        <li><Link href="/emotion-wheel" className="text-blue-600 hover:underline">Emotion Wheel</Link></li>
         <li><Link href="/currencies" className="text-blue-600 hover:underline">World Currencies</Link></li>
         <li><Link href="/overwatch" className="text-blue-600 hover:underline">Overwatch 2 Heroes</Link></li>
         <li><Link href="/marvel-rivals" className="text-blue-600 hover:underline">Marvel Rivals Characters</Link></li>

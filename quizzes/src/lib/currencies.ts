@@ -1,40 +1,31 @@
-const CURRENCY_DATA: { name: string; accept: string[] }[] = [
-  { name: 'US Dollar',          accept: ['us dollar', 'dollar', 'usd', 'american dollar', 'united states dollar'] },
-  { name: 'Euro',               accept: ['euro', 'eur'] },
-  { name: 'Japanese Yen',       accept: ['japanese yen', 'yen', 'jpy'] },
-  { name: 'British Pound',      accept: ['british pound', 'pound', 'gbp', 'pound sterling', 'sterling'] },
-  { name: 'Chinese Yuan',       accept: ['chinese yuan', 'yuan', 'cny', 'rmb', 'renminbi', 'chinese renminbi'] },
-  { name: 'Swiss Franc',        accept: ['swiss franc', 'franc', 'chf', 'swiss francs'] },
-  { name: 'Canadian Dollar',    accept: ['canadian dollar', 'cad', 'canada dollar'] },
-  { name: 'Australian Dollar',  accept: ['australian dollar', 'aud', 'australia dollar'] },
-  { name: 'Swedish Krona',      accept: ['swedish krona', 'krona', 'sek', 'swedish crowns'] },
-  { name: 'Norwegian Krone',    accept: ['norwegian krone', 'krone', 'nok'] },
-  { name: 'Danish Krone',       accept: ['danish krone', 'dkk'] },
-  { name: 'New Zealand Dollar', accept: ['new zealand dollar', 'nzd', 'kiwi dollar'] },
-  { name: 'Singapore Dollar',   accept: ['singapore dollar', 'sgd'] },
-  { name: 'Hong Kong Dollar',   accept: ['hong kong dollar', 'hkd'] },
-  { name: 'South Korean Won',   accept: ['south korean won', 'won', 'krw', 'korean won'] },
-  { name: 'Indian Rupee',       accept: ['indian rupee', 'rupee', 'inr'] },
-  { name: 'Brazilian Real',     accept: ['brazilian real', 'real', 'brl'] },
-  { name: 'Russian Ruble',      accept: ['russian ruble', 'ruble', 'rub', 'rouble', 'russian rouble'] },
-  { name: 'Mexican Peso',       accept: ['mexican peso', 'peso', 'mxn'] },
-  { name: 'South African Rand', accept: ['south african rand', 'rand', 'zar'] },
-  { name: 'Turkish Lira',       accept: ['turkish lira', 'lira', 'try'] },
-  { name: 'Saudi Riyal',        accept: ['saudi riyal', 'riyal', 'sar', 'saudi arabian riyal'] },
-  { name: 'UAE Dirham',         accept: ['uae dirham', 'dirham', 'aed', 'emirati dirham', 'united arab emirates dirham'] },
-  { name: 'Polish Złoty',       accept: ['polish złoty', 'polish zloty', 'złoty', 'zloty', 'pln'] },
-  { name: 'Thai Baht',          accept: ['thai baht', 'baht', 'thb'] },
-  { name: 'Indonesian Rupiah',  accept: ['indonesian rupiah', 'rupiah', 'idr'] },
-  { name: 'Israeli Shekel',     accept: ['israeli shekel', 'shekel', 'ils', 'new shekel', 'new israeli shekel'] },
-  { name: 'Philippine Peso',    accept: ['philippine peso', 'php', 'philippine pesos'] },
-  { name: 'Czech Koruna',       accept: ['czech koruna', 'koruna', 'czk'] },
-  { name: 'Bitcoin',            accept: ['bitcoin', 'btc'] },
+// Top 20 most traded currencies — BIS 2025 Global FX Survey (% of all FX trades)
+const CURRENCY_DATA: { name: string; pct: string; accept: string[] }[] = [
+  { name: 'US Dollar',          pct: '89.2%', accept: ['us dollar', 'dollar', 'usd', 'american dollar', 'united states dollar'] },
+  { name: 'Euro',               pct: '28.9%', accept: ['euro', 'eur'] },
+  { name: 'Japanese Yen',       pct: '16.8%', accept: ['japanese yen', 'yen', 'jpy'] },
+  { name: 'British Pound',      pct: '10.2%', accept: ['british pound', 'pound', 'gbp', 'pound sterling', 'sterling'] },
+  { name: 'Chinese Yuan',       pct: '8.5%',  accept: ['chinese yuan', 'yuan', 'cny', 'rmb', 'renminbi', 'chinese renminbi'] },
+  { name: 'Swiss Franc',        pct: '6.4%',  accept: ['swiss franc', 'franc', 'chf', 'swiss francs'] },
+  { name: 'Australian Dollar',  pct: '6.1%',  accept: ['australian dollar', 'aud', 'australia dollar'] },
+  { name: 'Canadian Dollar',    pct: '5.8%',  accept: ['canadian dollar', 'cad', 'canada dollar'] },
+  { name: 'Hong Kong Dollar',   pct: '3.8%',  accept: ['hong kong dollar', 'hkd'] },
+  { name: 'Singapore Dollar',   pct: '2.4%',  accept: ['singapore dollar', 'sgd'] },
+  { name: 'Indian Rupee',       pct: '1.9%',  accept: ['indian rupee', 'rupee', 'inr'] },
+  { name: 'South Korean Won',   pct: '1.8%',  accept: ['south korean won', 'won', 'krw', 'korean won'] },
+  { name: 'Swedish Krona',      pct: '1.6%',  accept: ['swedish krona', 'krona', 'sek', 'swedish crowns'] },
+  { name: 'Mexican Peso',       pct: '1.6%',  accept: ['mexican peso', 'peso', 'mxn'] },
+  { name: 'New Zealand Dollar', pct: '1.5%',  accept: ['new zealand dollar', 'nzd', 'kiwi dollar'] },
+  { name: 'Norwegian Krone',    pct: '1.3%',  accept: ['norwegian krone', 'krone', 'nok'] },
+  { name: 'New Taiwan Dollar',  pct: '1.2%',  accept: ['new taiwan dollar', 'taiwan dollar', 'twd'] },
+  { name: 'Brazilian Real',     pct: '0.9%',  accept: ['brazilian real', 'real', 'brl'] },
+  { name: 'Polish Złoty',       pct: '0.8%',  accept: ['polish złoty', 'polish zloty', 'złoty', 'zloty', 'pln'] },
+  { name: 'South African Rand', pct: '0.8%',  accept: ['south african rand', 'rand', 'zar'] },
 ];
 
 const CURRENCY_MAP = new Map<string, string>();
 CURRENCY_DATA.forEach(c => c.accept.forEach(a => CURRENCY_MAP.set(a, c.name)));
 
-export const CURRENCIES = CURRENCY_DATA.map(c => c.name);
+export const CURRENCIES: { name: string; pct: string }[] = CURRENCY_DATA.map(c => ({ name: c.name, pct: c.pct }));
 
 export function matchCurrency(guess: string): string | null {
   return CURRENCY_MAP.get(guess.trim().toLowerCase()) ?? null;

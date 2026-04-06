@@ -79,7 +79,7 @@ export default function CurrenciesQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">World Currencies</h1>
-      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major world currencies — currency name or ISO code accepted</p>
+      <p className="text-gray-500 text-sm mb-4">Name the top {TOTAL} most traded currencies — ranked by % of global FX trades (BIS 2025) — currency name or ISO code accepted</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -122,15 +122,18 @@ export default function CurrenciesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {CURRENCIES.map((currency, i) => {
-            const isGuessed = guessed.has(currency);
+          {CURRENCIES.map(({ name, pct }, i) => {
+            const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
-              <tr key={currency}>
+              <tr key={name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
+                </td>
+                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '60px', textAlign: 'right', fontSize: '12px' }}>
+                  {pct}
                 </td>
                 <td style={{
                   border: '1px solid black',
@@ -141,7 +144,7 @@ export default function CurrenciesQuiz() {
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? currency : '\u00A0'}
+                  {isGuessed || isMissed ? name : '\u00A0'}
                 </td>
               </tr>
             );

@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { US_CITIES, matchCity } from '@/lib/us-cities';
-// City.state is kept in data for "city, state" accept aliases but not displayed
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = US_CITIES.length;
@@ -123,15 +122,18 @@ export default function USCitiesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {US_CITIES.map(({ name }, i) => {
+          {US_CITIES.map(({ name, state }, i) => {
             const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
               <tr key={name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
+                </td>
+                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '120px', fontSize: '12px' }}>
+                  {state}
                 </td>
                 <td style={{
                   border: '1px solid black',
