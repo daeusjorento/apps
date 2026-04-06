@@ -2,17 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { US_CITIES, matchCity } from '@/lib/us-cities';
-// City.state is kept in data for "city, state" accept aliases but not displayed
+import { COUNTRIES_SOUTH_AMERICA, matchCountry } from '@/lib/countries-south-america';
 
 type GameState = 'playing' | 'given-up' | 'complete';
-const TOTAL = US_CITIES.length;
+const TOTAL = COUNTRIES_SOUTH_AMERICA.length;
 
-export default function USCitiesQuiz() {
+export default function CountriesSouthAmericaQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('us-cities-guessed');
+      const saved = localStorage.getItem('countries-south-america-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -21,7 +20,7 @@ export default function USCitiesQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('us-cities-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('countries-south-america-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,12 +30,12 @@ export default function USCitiesQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('us-cities-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('countries-south-america-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('us-cities-gamestate', gameState); }
+    try { localStorage.setItem('countries-south-america-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -45,7 +44,7 @@ export default function USCitiesQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matched = matchCity(val);
+    const matched = matchCountry(val);
     if (matched && !guessed.has(matched)) {
       const next = new Set(guessed).add(matched);
       setGuessed(next);
@@ -61,8 +60,8 @@ export default function USCitiesQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('us-cities-guessed');
-      localStorage.removeItem('us-cities-gamestate');
+      localStorage.removeItem('countries-south-america-guessed');
+      localStorage.removeItem('countries-south-america-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -79,8 +78,8 @@ export default function USCitiesQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">US Cities by Population</h1>
-      <p className="text-gray-500 text-sm mb-4">Name the {TOTAL} most populous US cities — ranked by population</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Countries of South America</h1>
+      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} countries in South America</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -93,7 +92,7 @@ export default function USCitiesQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a city name..."
+            placeholder="Type a country name..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -104,7 +103,7 @@ export default function USCitiesQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} cities!</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} countries!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
@@ -123,9 +122,9 @@ export default function USCitiesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {US_CITIES.map(({ name }, i) => {
+          {COUNTRIES_SOUTH_AMERICA.map((name, i) => {
             const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
@@ -136,7 +135,7 @@ export default function USCitiesQuiz() {
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '180px',
+                  width: '220px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',

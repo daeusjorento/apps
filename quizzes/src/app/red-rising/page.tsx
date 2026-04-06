@@ -2,27 +2,27 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { COUNTRIES, COUNTRY_SECTIONS, matchCountry } from '@/lib/countries';
+import { RED_RISING_CHARACTERS, RED_RISING_SECTIONS, matchCharacter } from '@/lib/red-rising';
 
 type GameState = 'playing' | 'given-up' | 'complete';
-const TOTAL = COUNTRIES.length;
+const TOTAL = RED_RISING_CHARACTERS.length;
 
 type TableRow =
   | { type: 'header'; text: string }
-  | { type: 'country'; name: string; continent: string; index: number };
+  | { type: 'character'; name: string; index: number };
 
 const TABLE_ROWS: TableRow[] = [];
 let _idx = 0;
-COUNTRY_SECTIONS.forEach(s => {
+RED_RISING_SECTIONS.forEach(s => {
   TABLE_ROWS.push({ type: 'header', text: s.header });
-  s.countries.forEach(name => TABLE_ROWS.push({ type: 'country', name, continent: s.header, index: _idx++ }));
+  s.characters.forEach(name => TABLE_ROWS.push({ type: 'character', name, index: _idx++ }));
 });
 
-export default function CountriesQuiz() {
+export default function RedRisingQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('countries-guessed');
+      const saved = localStorage.getItem('red-rising-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -31,7 +31,7 @@ export default function CountriesQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('countries-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('red-rising-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,12 +41,12 @@ export default function CountriesQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('countries-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('red-rising-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('countries-gamestate', gameState); }
+    try { localStorage.setItem('red-rising-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -55,7 +55,7 @@ export default function CountriesQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matched = matchCountry(val);
+    const matched = matchCharacter(val);
     if (matched && !guessed.has(matched)) {
       const next = new Set(guessed).add(matched);
       setGuessed(next);
@@ -71,8 +71,8 @@ export default function CountriesQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('countries-guessed');
-      localStorage.removeItem('countries-gamestate');
+      localStorage.removeItem('red-rising-guessed');
+      localStorage.removeItem('red-rising-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -89,8 +89,8 @@ export default function CountriesQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">Countries of the World</h1>
-      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} countries — common names and abbreviations accepted</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Red Rising Characters</h1>
+      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major characters from the Red Rising saga — nicknames accepted</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -103,7 +103,7 @@ export default function CountriesQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a country name..."
+            placeholder="Type a character name..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -114,7 +114,7 @@ export default function CountriesQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} countries!</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} characters!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
@@ -133,13 +133,13 @@ export default function CountriesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
           {TABLE_ROWS.map(row => {
             if (row.type === 'header') {
               return (
                 <tr key={`h-${row.text}`}>
-                  <td colSpan={3} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                  <td colSpan={2} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
                     {row.text}
                   </td>
                 </tr>
@@ -151,9 +151,6 @@ export default function CountriesQuiz() {
               <tr key={row.name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {row.index + 1}.
-                </td>
-                <td style={{ border: '1px solid black', padding: '4px 8px', width: '120px', background: '#f9fafb', color: '#6b7280', fontSize: '12px' }}>
-                  {row.continent}
                 </td>
                 <td style={{
                   border: '1px solid black',

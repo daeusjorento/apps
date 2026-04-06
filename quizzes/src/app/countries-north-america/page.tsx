@@ -2,27 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { ML_ALGORITHMS, ML_SECTIONS, matchMLAlgorithm } from '@/lib/ml-algorithms';
+import { COUNTRIES_NORTH_AMERICA, matchCountry } from '@/lib/countries-north-america';
 
 type GameState = 'playing' | 'given-up' | 'complete';
-const TOTAL = ML_ALGORITHMS.length;
+const TOTAL = COUNTRIES_NORTH_AMERICA.length;
 
-type TableRow =
-  | { type: 'header'; text: string }
-  | { type: 'algorithm'; name: string; index: number };
-
-const TABLE_ROWS: TableRow[] = [];
-let _idx = 0;
-ML_SECTIONS.forEach(s => {
-  TABLE_ROWS.push({ type: 'header', text: s.header });
-  s.algorithms.forEach(name => TABLE_ROWS.push({ type: 'algorithm', name, index: _idx++ }));
-});
-
-export default function MLAlgorithmsQuiz() {
+export default function CountriesNorthAmericaQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('ml-algorithms-guessed');
+      const saved = localStorage.getItem('countries-north-america-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -31,7 +20,7 @@ export default function MLAlgorithmsQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('ml-algorithms-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('countries-north-america-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,12 +30,12 @@ export default function MLAlgorithmsQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('ml-algorithms-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('countries-north-america-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('ml-algorithms-gamestate', gameState); }
+    try { localStorage.setItem('countries-north-america-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -55,7 +44,7 @@ export default function MLAlgorithmsQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matched = matchMLAlgorithm(val);
+    const matched = matchCountry(val);
     if (matched && !guessed.has(matched)) {
       const next = new Set(guessed).add(matched);
       setGuessed(next);
@@ -71,8 +60,8 @@ export default function MLAlgorithmsQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('ml-algorithms-guessed');
-      localStorage.removeItem('ml-algorithms-gamestate');
+      localStorage.removeItem('countries-north-america-guessed');
+      localStorage.removeItem('countries-north-america-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -89,8 +78,8 @@ export default function MLAlgorithmsQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">Machine Learning Algorithms</h1>
-      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} well-known ML algorithms — abbreviations accepted (e.g. SVM, kNN, PCA)</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Countries of North America</h1>
+      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} countries in North America</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -103,7 +92,7 @@ export default function MLAlgorithmsQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type an algorithm name..."
+            placeholder="Type a country name..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -114,7 +103,7 @@ export default function MLAlgorithmsQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} ML algorithms!</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} countries!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
@@ -135,33 +124,24 @@ export default function MLAlgorithmsQuiz() {
 
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {TABLE_ROWS.map(row => {
-            if (row.type === 'header') {
-              return (
-                <tr key={`h-${row.text}`}>
-                  <td colSpan={2} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
-                    {row.text}
-                  </td>
-                </tr>
-              );
-            }
-            const isGuessed = guessed.has(row.name);
+          {COUNTRIES_NORTH_AMERICA.map((name, i) => {
+            const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
-              <tr key={row.name}>
+              <tr key={name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {row.index + 1}.
+                  {i + 1}.
                 </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '300px',
+                  width: '220px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? row.name : '\u00A0'}
+                  {isGuessed || isMissed ? name : '\u00A0'}
                 </td>
               </tr>
             );

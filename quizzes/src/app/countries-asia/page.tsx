@@ -2,16 +2,16 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { FALLACIES, matchFallacy } from '@/lib/logical-fallacies';
+import { COUNTRIES_ASIA, matchCountry } from '@/lib/countries-asia';
 
 type GameState = 'playing' | 'given-up' | 'complete';
-const TOTAL = FALLACIES.length;
+const TOTAL = COUNTRIES_ASIA.length;
 
-export default function LogicalFallaciesQuiz() {
+export default function CountriesAsiaQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
     if (typeof window === 'undefined') return new Set();
     try {
-      const saved = localStorage.getItem('logical-fallacies-guessed');
+      const saved = localStorage.getItem('countries-asia-guessed');
       return saved ? new Set(JSON.parse(saved) as string[]) : new Set();
     } catch { return new Set(); }
   });
@@ -20,7 +20,7 @@ export default function LogicalFallaciesQuiz() {
   const [gameState, setGameState] = useState<GameState>(() => {
     if (typeof window === 'undefined') return 'playing';
     try {
-      return (localStorage.getItem('logical-fallacies-gamestate') as GameState) || 'playing';
+      return (localStorage.getItem('countries-asia-gamestate') as GameState) || 'playing';
     } catch { return 'playing'; }
   });
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,12 +30,12 @@ export default function LogicalFallaciesQuiz() {
   }, [gameState]);
 
   useEffect(() => {
-    try { localStorage.setItem('logical-fallacies-guessed', JSON.stringify(Array.from(guessed))); }
+    try { localStorage.setItem('countries-asia-guessed', JSON.stringify(Array.from(guessed))); }
     catch { /* ignore */ }
   }, [guessed]);
 
   useEffect(() => {
-    try { localStorage.setItem('logical-fallacies-gamestate', gameState); }
+    try { localStorage.setItem('countries-asia-gamestate', gameState); }
     catch { /* ignore */ }
   }, [gameState]);
 
@@ -44,7 +44,7 @@ export default function LogicalFallaciesQuiz() {
     if (gameState !== 'playing') return;
     const val = input.trim();
     if (!val) return;
-    const matched = matchFallacy(val);
+    const matched = matchCountry(val);
     if (matched && !guessed.has(matched)) {
       const next = new Set(guessed).add(matched);
       setGuessed(next);
@@ -60,8 +60,8 @@ export default function LogicalFallaciesQuiz() {
 
   const handleReset = () => {
     try {
-      localStorage.removeItem('logical-fallacies-guessed');
-      localStorage.removeItem('logical-fallacies-gamestate');
+      localStorage.removeItem('countries-asia-guessed');
+      localStorage.removeItem('countries-asia-gamestate');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -78,8 +78,8 @@ export default function LogicalFallaciesQuiz() {
         <Link href="/" className="text-sm text-gray-400 hover:text-gray-600">← All Quizzes</Link>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-1">Logical Fallacies</h1>
-      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} common logical fallacies — Latin names and common short names accepted</p>
+      <h1 className="text-2xl font-bold text-gray-900 mb-1">Countries of Asia</h1>
+      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} countries in Asia</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -92,7 +92,7 @@ export default function LogicalFallaciesQuiz() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Type a fallacy name..."
+            placeholder="Type a country name..."
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -103,7 +103,7 @@ export default function LogicalFallaciesQuiz() {
         </form>
       )}
 
-      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} fallacies!</p>}
+      {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} countries!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
       <div className="flex gap-3 mb-6">
@@ -122,26 +122,26 @@ export default function LogicalFallaciesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {FALLACIES.map((fallacy, i) => {
-            const isGuessed = guessed.has(fallacy);
+          {COUNTRIES_ASIA.map((name, i) => {
+            const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
-              <tr key={fallacy}>
+              <tr key={name}>
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
                 </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '260px',
+                  width: '220px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',
                   userSelect: 'none',
                 }}>
-                  {isGuessed || isMissed ? fallacy : '\u00A0'}
+                  {isGuessed || isMissed ? name : '\u00A0'}
                 </td>
               </tr>
             );

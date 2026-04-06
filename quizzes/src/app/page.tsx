@@ -11,27 +11,29 @@ export default function HubPage() {
         <li><Link href="/us-states" className="text-blue-600 hover:underline">US States</Link></li>
         <li><Link href="/us-capitals" className="text-blue-600 hover:underline">US Capitals</Link></li>
         <li><Link href="/us-presidents" className="text-blue-600 hover:underline">US Presidents</Link></li>
-        <li><Link href="/us-cities" className="text-blue-600 hover:underline">US Cities</Link></li>
-        <li><Link href="/countries" className="text-blue-600 hover:underline">Countries of the World</Link></li>
+        <li><Link href="/us-cities" className="text-blue-600 hover:underline">US Cities by Population</Link></li>
+        <li><Link href="/countries-africa" className="text-blue-600 hover:underline">Countries of Africa</Link></li>
+        <li><Link href="/countries-asia" className="text-blue-600 hover:underline">Countries of Asia</Link></li>
+        <li><Link href="/countries-europe" className="text-blue-600 hover:underline">Countries of Europe</Link></li>
+        <li><Link href="/countries-north-america" className="text-blue-600 hover:underline">Countries of North America</Link></li>
+        <li><Link href="/countries-south-america" className="text-blue-600 hover:underline">Countries of South America</Link></li>
         <li><Link href="/canada-provinces" className="text-blue-600 hover:underline">Canadian Provinces &amp; Territories</Link></li>
         <li><Link href="/nfl-teams" className="text-blue-600 hover:underline">NFL Teams</Link></li>
         <li><Link href="/nba-teams" className="text-blue-600 hover:underline">NBA Teams</Link></li>
         <li><Link href="/mlb-teams" className="text-blue-600 hover:underline">MLB Teams</Link></li>
         <li><Link href="/disney-movies" className="text-blue-600 hover:underline">Disney Animated Movies</Link></li>
-        <li><Link href="/ml-algorithms" className="text-blue-600 hover:underline">Machine Learning Algorithms</Link></li>
         <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
         <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
         <li><Link href="/organs" className="text-blue-600 hover:underline">Human Organs</Link></li>
         <li><Link href="/the-wire" className="text-blue-600 hover:underline">The Wire Characters</Link></li>
+        <li><Link href="/red-rising" className="text-blue-600 hover:underline">Red Rising Characters</Link></li>
+        <li><Link href="/lord-of-the-rings" className="text-blue-600 hover:underline">Lord of the Rings Characters</Link></li>
         <li><Link href="/emotion-wheel" className="text-blue-600 hover:underline">Emotion Wheel</Link></li>
-        <li><Link href="/psychology-biases" className="text-blue-600 hover:underline">Psychology Biases</Link></li>
-        <li><Link href="/logical-fallacies" className="text-blue-600 hover:underline">Logical Fallacies</Link></li>
         <li><Link href="/currencies" className="text-blue-600 hover:underline">World Currencies</Link></li>
         <li><Link href="/overwatch" className="text-blue-600 hover:underline">Overwatch 2 Heroes</Link></li>
         <li><Link href="/marvel-rivals" className="text-blue-600 hover:underline">Marvel Rivals Characters</Link></li>
         <li><Link href="/seven-deadly-sins" className="text-blue-600 hover:underline">Seven Deadly Sins</Link></li>
         <li><Link href="/elite-schools" className="text-blue-600 hover:underline">Ivy League &amp; NESCAC Schools</Link></li>
-        <li><Link href="/apple-varieties" className="text-blue-600 hover:underline">Apple Varieties</Link></li>
       </ul>
     </div>
   );
