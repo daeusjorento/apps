@@ -25,6 +25,10 @@ export default function HubPage() {
         <li><Link href="/wnba-teams" className="text-blue-600 hover:underline">WNBA Teams</Link></li>
         <li><Link href="/premier-league" className="text-blue-600 hover:underline">Premier League Teams</Link></li>
         <li><Link href="/disney-movies" className="text-blue-600 hover:underline">Disney Animated Movies</Link></li>
+        <li><Link href="/planets" className="text-blue-600 hover:underline">Planets of the Solar System</Link></li>
+        <li><Link href="/solar-system-moons" className="text-blue-600 hover:underline">Solar System Moons</Link></li>
+        <li><Link href="/us-wars" className="text-blue-600 hover:underline">US Wars</Link></li>
+        <li><Link href="/global-wars" className="text-blue-600 hover:underline">Deadliest Wars in History</Link></li>
         <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
         <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
         <li><Link href="/organs" className="text-blue-600 hover:underline">Human Organs</Link></li>
