@@ -3,44 +3,84 @@ import Link from 'next/link';
 
 export const metadata: Metadata = { title: 'Quiz Hub' };
 
+const CATEGORIES = [
+  {
+    name: 'Geography',
+    quizzes: [
+      { href: '/us-states', label: 'US States' },
+      { href: '/us-capitals', label: 'US Capitals' },
+      { href: '/us-cities', label: 'US Cities by Population' },
+      { href: '/canada-provinces', label: 'Canadian Provinces & Territories' },
+      { href: '/countries-africa', label: 'Countries of Africa' },
+      { href: '/countries-asia', label: 'Countries of Asia' },
+      { href: '/countries-europe', label: 'Countries of Europe' },
+      { href: '/countries-north-america', label: 'Countries of North America' },
+      { href: '/countries-south-america', label: 'Countries of South America' },
+      { href: '/currencies', label: 'World Currencies' },
+    ],
+  },
+  {
+    name: 'History',
+    quizzes: [
+      { href: '/us-presidents', label: 'US Presidents' },
+      { href: '/us-wars', label: 'US Wars' },
+      { href: '/global-wars', label: 'Deadliest Wars in History' },
+    ],
+  },
+  {
+    name: 'Sports',
+    quizzes: [
+      { href: '/nfl-teams', label: 'NFL Teams' },
+      { href: '/nba-teams', label: 'NBA Teams' },
+      { href: '/nhl-teams', label: 'NHL Teams' },
+      { href: '/mlb-teams', label: 'MLB Teams' },
+      { href: '/wnba-teams', label: 'WNBA Teams' },
+      { href: '/premier-league', label: 'Premier League Teams' },
+    ],
+  },
+  {
+    name: 'Science',
+    quizzes: [
+      { href: '/planets', label: 'Planets of the Solar System' },
+      { href: '/solar-system-moons', label: 'Solar System Moons' },
+      { href: '/bones', label: 'Bones' },
+      { href: '/muscles', label: 'Muscles' },
+      { href: '/organs', label: 'Human Organs' },
+    ],
+  },
+  {
+    name: 'Pop Culture & Fandoms',
+    quizzes: [
+      { href: '/disney-movies', label: 'Disney Animated Movies' },
+      { href: '/the-wire', label: 'The Wire Characters' },
+      { href: '/lord-of-the-rings', label: 'Lord of the Rings Characters' },
+      { href: '/red-rising', label: 'Red Rising Characters' },
+      { href: '/overwatch', label: 'Overwatch 2 Heroes' },
+      { href: '/marvel-rivals', label: 'Marvel Rivals Characters' },
+      { href: '/seven-deadly-sins', label: 'Seven Deadly Sins' },
+      { href: '/elite-schools', label: 'Ivy League & NESCAC Schools' },
+    ],
+  },
+];
+
 export default function HubPage() {
   return (
     <div className="min-h-screen bg-white px-8 py-12">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Quiz Hub</h1>
-      <ul className="space-y-2">
-        <li><Link href="/us-states" className="text-blue-600 hover:underline">US States</Link></li>
-        <li><Link href="/us-capitals" className="text-blue-600 hover:underline">US Capitals</Link></li>
-        <li><Link href="/us-presidents" className="text-blue-600 hover:underline">US Presidents</Link></li>
-        <li><Link href="/us-cities" className="text-blue-600 hover:underline">US Cities by Population</Link></li>
-        <li><Link href="/countries-africa" className="text-blue-600 hover:underline">Countries of Africa</Link></li>
-        <li><Link href="/countries-asia" className="text-blue-600 hover:underline">Countries of Asia</Link></li>
-        <li><Link href="/countries-europe" className="text-blue-600 hover:underline">Countries of Europe</Link></li>
-        <li><Link href="/countries-north-america" className="text-blue-600 hover:underline">Countries of North America</Link></li>
-        <li><Link href="/countries-south-america" className="text-blue-600 hover:underline">Countries of South America</Link></li>
-        <li><Link href="/canada-provinces" className="text-blue-600 hover:underline">Canadian Provinces &amp; Territories</Link></li>
-        <li><Link href="/nfl-teams" className="text-blue-600 hover:underline">NFL Teams</Link></li>
-        <li><Link href="/nba-teams" className="text-blue-600 hover:underline">NBA Teams</Link></li>
-        <li><Link href="/nhl-teams" className="text-blue-600 hover:underline">NHL Teams</Link></li>
-        <li><Link href="/mlb-teams" className="text-blue-600 hover:underline">MLB Teams</Link></li>
-        <li><Link href="/wnba-teams" className="text-blue-600 hover:underline">WNBA Teams</Link></li>
-        <li><Link href="/premier-league" className="text-blue-600 hover:underline">Premier League Teams</Link></li>
-        <li><Link href="/disney-movies" className="text-blue-600 hover:underline">Disney Animated Movies</Link></li>
-        <li><Link href="/planets" className="text-blue-600 hover:underline">Planets of the Solar System</Link></li>
-        <li><Link href="/solar-system-moons" className="text-blue-600 hover:underline">Solar System Moons</Link></li>
-        <li><Link href="/us-wars" className="text-blue-600 hover:underline">US Wars</Link></li>
-        <li><Link href="/global-wars" className="text-blue-600 hover:underline">Deadliest Wars in History</Link></li>
-        <li><Link href="/bones" className="text-blue-600 hover:underline">Bones</Link></li>
-        <li><Link href="/muscles" className="text-blue-600 hover:underline">Muscles</Link></li>
-        <li><Link href="/organs" className="text-blue-600 hover:underline">Human Organs</Link></li>
-        <li><Link href="/the-wire" className="text-blue-600 hover:underline">The Wire Characters</Link></li>
-        <li><Link href="/red-rising" className="text-blue-600 hover:underline">Red Rising Characters</Link></li>
-        <li><Link href="/lord-of-the-rings" className="text-blue-600 hover:underline">Lord of the Rings Characters</Link></li>
-        <li><Link href="/currencies" className="text-blue-600 hover:underline">World Currencies</Link></li>
-        <li><Link href="/overwatch" className="text-blue-600 hover:underline">Overwatch 2 Heroes</Link></li>
-        <li><Link href="/marvel-rivals" className="text-blue-600 hover:underline">Marvel Rivals Characters</Link></li>
-        <li><Link href="/seven-deadly-sins" className="text-blue-600 hover:underline">Seven Deadly Sins</Link></li>
-        <li><Link href="/elite-schools" className="text-blue-600 hover:underline">Ivy League &amp; NESCAC Schools</Link></li>
-      </ul>
+      <h1 className="text-2xl font-bold text-gray-900 mb-8">Quiz Hub</h1>
+      <div className="space-y-8">
+        {CATEGORIES.map(cat => (
+          <section key={cat.name}>
+            <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">{cat.name}</h2>
+            <ul className="space-y-1.5">
+              {cat.quizzes.map(q => (
+                <li key={q.href}>
+                  <Link href={q.href} className="text-blue-600 hover:underline">{q.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
