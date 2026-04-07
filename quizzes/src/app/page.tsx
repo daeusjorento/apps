@@ -39,17 +39,22 @@ const CATEGORIES = [
     ],
   },
   {
-    name: 'Science',
+    name: 'Space',
     quizzes: [
       { href: '/planets', label: 'Planets of the Solar System' },
       { href: '/solar-system-moons', label: 'Solar System Moons' },
+    ],
+  },
+  {
+    name: 'Anatomy',
+    quizzes: [
       { href: '/bones', label: 'Bones' },
       { href: '/muscles', label: 'Muscles' },
       { href: '/organs', label: 'Human Organs' },
     ],
   },
   {
-    name: 'Pop Culture & Fandoms',
+    name: 'Entertainment & Games',
     quizzes: [
       { href: '/disney-movies', label: 'Disney Animated Movies' },
       { href: '/the-wire', label: 'The Wire Characters' },
@@ -58,6 +63,12 @@ const CATEGORIES = [
       { href: '/overwatch', label: 'Overwatch 2 Heroes' },
       { href: '/marvel-rivals', label: 'Marvel Rivals Characters' },
       { href: '/seven-deadly-sins', label: 'Seven Deadly Sins' },
+      { href: '/greek-roman-gods', label: 'Greek & Roman Gods' },
+    ],
+  },
+  {
+    name: 'Schools',
+    quizzes: [
       { href: '/elite-schools', label: 'Ivy League & NESCAC Schools' },
     ],
   },
