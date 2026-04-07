@@ -3,9 +3,39 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { ORGANS, matchOrgan } from '@/lib/organs';
+import { BodyDiagram, BodyPart } from '@/components/BodyDiagram';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = ORGANS.length;
+
+const ORGAN_PARTS: BodyPart[] = [
+  { name: 'Brain',           dots: [{ cx: 100, cy: 32, r: 20 }] },
+  { name: 'Eyes',            dots: [{ cx: 86, cy: 40, r: 5 }, { cx: 114, cy: 40, r: 5 }] },
+  { name: 'Ears',            dots: [{ cx: 66, cy: 44, r: 5 }, { cx: 134, cy: 44, r: 5 }] },
+  { name: 'Tongue',          dots: [{ cx: 100, cy: 62, r: 6 }] },
+  { name: 'Trachea',         dots: [{ cx: 103, cy: 82, r: 4 }] },
+  { name: 'Esophagus',       dots: [{ cx: 97, cy: 108, r: 4 }] },
+  { name: 'Thyroid',         dots: [{ cx: 100, cy: 88, r: 6 }] },
+  { name: 'Thymus',          dots: [{ cx: 100, cy: 114, r: 7 }] },
+  { name: 'Lungs',           dots: [{ cx: 78, cy: 148, r: 13 }, { cx: 122, cy: 148, r: 13 }] },
+  { name: 'Heart',           dots: [{ cx: 90, cy: 145, r: 10 }] },
+  { name: 'Diaphragm',       dots: [{ cx: 100, cy: 208, r: 12 }] },
+  { name: 'Liver',           dots: [{ cx: 88, cy: 178, r: 12 }] },
+  { name: 'Stomach',         dots: [{ cx: 96, cy: 190, r: 9 }] },
+  { name: 'Spleen',          dots: [{ cx: 76, cy: 188, r: 7 }] },
+  { name: 'Pancreas',        dots: [{ cx: 100, cy: 200, r: 7 }] },
+  { name: 'Gallbladder',     dots: [{ cx: 106, cy: 182, r: 6 }] },
+  { name: 'Adrenal Glands',  dots: [{ cx: 82, cy: 216, r: 6 }, { cx: 118, cy: 216, r: 6 }] },
+  { name: 'Kidneys',         dots: [{ cx: 80, cy: 222, r: 8 }, { cx: 120, cy: 222, r: 8 }] },
+  { name: 'Small Intestine', dots: [{ cx: 100, cy: 220, r: 11 }] },
+  { name: 'Large Intestine', dots: [{ cx: 100, cy: 232, r: 10 }] },
+  { name: 'Appendix',        dots: [{ cx: 126, cy: 242, r: 5 }] },
+  { name: 'Bladder',         dots: [{ cx: 100, cy: 254, r: 7 }] },
+  { name: 'Skin',            dots: [{ cx: 100, cy: 128, r: 18 }] },
+  { name: 'Uterus',          dots: [{ cx: 100, cy: 258, r: 7 }] },
+  { name: 'Ovaries',         dots: [{ cx: 88, cy: 262, r: 5 }, { cx: 112, cy: 262, r: 5 }] },
+  { name: 'Testes',          dots: [{ cx: 88, cy: 266, r: 5 }, { cx: 112, cy: 266, r: 5 }] },
+];
 
 export default function OrgansQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -79,7 +109,7 @@ export default function OrgansQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">Human Organs</h1>
-      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major human organs — common or Latin names accepted</p>
+      <p className="text-gray-500 text-sm mb-4">Name all {TOTAL} organs — common or medical names accepted</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -122,32 +152,43 @@ export default function OrgansQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
-        <tbody>
-          {ORGANS.map((organ, i) => {
-            const isGuessed = guessed.has(organ);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <tr key={organ}>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '200px',
-                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
-                  fontWeight: isGuessed ? 500 : 'normal',
-                  userSelect: 'none',
-                }}>
-                  {isGuessed || isMissed ? organ : '\u00A0'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        <table style={{ borderCollapse: 'collapse', flexShrink: 0 }}>
+          <tbody>
+            {ORGANS.map((name, i) => {
+              const isGuessed = guessed.has(name);
+              const isMissed = isOver && !isGuessed;
+              return (
+                <tr key={name}>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
+                    {i + 1}.
+                  </td>
+                  <td style={{
+                    border: '1px solid black',
+                    padding: '4px 8px',
+                    width: '192px',
+                    background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                    color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                    fontWeight: isGuessed ? 500 : 'normal',
+                    userSelect: 'none',
+                  }}>
+                    {isGuessed || isMissed ? name : '\u00A0'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <div className="md:sticky md:top-8">
+          <BodyDiagram parts={ORGAN_PARTS} guessed={guessed} isOver={isOver} />
+          <div className="flex gap-4 mt-2 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full bg-gray-700" /> Guessed</span>
+            {isOver && <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full bg-gray-400" /> Missed</span>}
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full border border-gray-400" /> Remaining</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

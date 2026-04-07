@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { MUSCLES, MUSCLE_SECTIONS, matchMuscle } from '@/lib/muscles';
+import { BodyDiagram, BodyPart } from '@/components/BodyDiagram';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = MUSCLES.length;
@@ -17,6 +18,40 @@ MUSCLE_SECTIONS.forEach(s => {
   TABLE_ROWS.push({ type: 'header', text: s.header });
   s.muscles.forEach(name => TABLE_ROWS.push({ type: 'muscle', name, index: _idx++ }));
 });
+
+const MUSCLE_PARTS: BodyPart[] = [
+  // Upper Body
+  { name: 'Trapezius',         dots: [{ cx: 72, cy: 98, r: 9 }, { cx: 128, cy: 98, r: 9 }] },
+  { name: 'Latissimus dorsi',  dots: [{ cx: 58, cy: 158, r: 9 }, { cx: 142, cy: 158, r: 9 }] },
+  { name: 'Rhomboids',         dots: [{ cx: 84, cy: 132, r: 8 }, { cx: 116, cy: 132, r: 8 }] },
+  { name: 'Pectoralis major',  dots: [{ cx: 80, cy: 140, r: 11 }, { cx: 120, cy: 140, r: 11 }] },
+  { name: 'Deltoid',           dots: [{ cx: 48, cy: 118, r: 10 }, { cx: 152, cy: 118, r: 10 }] },
+  { name: 'Rotator cuff',      dots: [{ cx: 50, cy: 108, r: 8 }, { cx: 150, cy: 108, r: 8 }] },
+  { name: 'Serratus anterior', dots: [{ cx: 62, cy: 165, r: 8 }, { cx: 138, cy: 165, r: 8 }] },
+  // Arms
+  { name: 'Biceps brachii',   dots: [{ cx: 44, cy: 135, r: 8 }, { cx: 156, cy: 135, r: 8 }] },
+  { name: 'Triceps brachii',  dots: [{ cx: 42, cy: 148, r: 8 }, { cx: 158, cy: 148, r: 8 }] },
+  { name: 'Forearm muscles',  dots: [{ cx: 34, cy: 208, r: 8 }, { cx: 166, cy: 208, r: 8 }] },
+  // Core
+  { name: 'Rectus abdominis',     dots: [{ cx: 100, cy: 182, r: 9 }] },
+  { name: 'Obliques',             dots: [{ cx: 73, cy: 190, r: 8 }, { cx: 127, cy: 190, r: 8 }] },
+  { name: 'Transversus abdominis',dots: [{ cx: 100, cy: 198, r: 7 }] },
+  { name: 'Erector spinae',       dots: [{ cx: 90, cy: 175, r: 6 }, { cx: 110, cy: 175, r: 6 }] },
+  { name: 'Intercostals',         dots: [{ cx: 76, cy: 162, r: 7 }, { cx: 124, cy: 162, r: 7 }] },
+  { name: 'Diaphragm',            dots: [{ cx: 100, cy: 212, r: 10 }] },
+  // Lower Body
+  { name: 'Quadriceps',      dots: [{ cx: 78, cy: 282, r: 10 }, { cx: 122, cy: 282, r: 10 }] },
+  { name: 'Hamstrings',      dots: [{ cx: 78, cy: 308, r: 10 }, { cx: 122, cy: 308, r: 10 }] },
+  { name: 'Gluteus maximus', dots: [{ cx: 74, cy: 248, r: 10 }, { cx: 126, cy: 248, r: 10 }] },
+  { name: 'Gluteus medius',  dots: [{ cx: 62, cy: 242, r: 8 }, { cx: 138, cy: 242, r: 8 }] },
+  { name: 'Hip flexors',     dots: [{ cx: 80, cy: 255, r: 7 }, { cx: 120, cy: 255, r: 7 }] },
+  { name: 'Adductors',       dots: [{ cx: 84, cy: 298, r: 7 }, { cx: 116, cy: 298, r: 7 }] },
+  { name: 'Piriformis',      dots: [{ cx: 76, cy: 258, r: 6 }, { cx: 124, cy: 258, r: 6 }] },
+  { name: 'Sartorius',       dots: [{ cx: 82, cy: 302, r: 6 }, { cx: 118, cy: 302, r: 6 }] },
+  { name: 'Calves',          dots: [{ cx: 72, cy: 380, r: 8 }, { cx: 128, cy: 380, r: 8 }] },
+  { name: 'Soleus',          dots: [{ cx: 70, cy: 395, r: 7 }, { cx: 130, cy: 395, r: 7 }] },
+  { name: 'Tibialis anterior', dots: [{ cx: 68, cy: 368, r: 7 }, { cx: 132, cy: 368, r: 7 }] },
+];
 
 export default function MusclesQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -90,7 +125,7 @@ export default function MusclesQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">Muscles of the Human Body</h1>
-      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major muscle groups — common names accepted</p>
+      <p className="text-gray-500 text-sm mb-4">Name {TOTAL} major muscles — common or Latin names accepted</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>
@@ -133,41 +168,52 @@ export default function MusclesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
-        <tbody>
-          {TABLE_ROWS.map((row) => {
-            if (row.type === 'header') {
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        <table style={{ borderCollapse: 'collapse', flexShrink: 0 }}>
+          <tbody>
+            {TABLE_ROWS.map(row => {
+              if (row.type === 'header') {
+                return (
+                  <tr key={`h-${row.text}`}>
+                    <td colSpan={2} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                      {row.text}
+                    </td>
+                  </tr>
+                );
+              }
+              const isGuessed = guessed.has(row.name);
+              const isMissed = isOver && !isGuessed;
               return (
-                <tr key={`h-${row.text}`}>
-                  <td colSpan={2} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
-                    {row.text}
+                <tr key={row.name}>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
+                    {row.index + 1}.
+                  </td>
+                  <td style={{
+                    border: '1px solid black',
+                    padding: '4px 8px',
+                    width: '220px',
+                    background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                    color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                    fontWeight: isGuessed ? 500 : 'normal',
+                    userSelect: 'none',
+                  }}>
+                    {isGuessed || isMissed ? row.name : '\u00A0'}
                   </td>
                 </tr>
               );
-            }
-            const isGuessed = guessed.has(row.name);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <tr key={row.name}>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {row.index + 1}.
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '260px',
-                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
-                  fontWeight: isGuessed ? 500 : 'normal',
-                  userSelect: 'none',
-                }}>
-                  {isGuessed || isMissed ? row.name : '\u00A0'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            })}
+          </tbody>
+        </table>
+
+        <div className="md:sticky md:top-8">
+          <BodyDiagram parts={MUSCLE_PARTS} guessed={guessed} isOver={isOver} />
+          <div className="flex gap-4 mt-2 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full bg-gray-700" /> Guessed</span>
+            {isOver && <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full bg-gray-400" /> Missed</span>}
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-full border border-gray-400" /> Remaining</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

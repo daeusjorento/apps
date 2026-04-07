@@ -3,9 +3,24 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { CANADA_PROVINCES, matchProvince } from '@/lib/canada-provinces';
+import { WorldMap } from '@/components/WorldMap';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = CANADA_PROVINCES.length;
+
+const REGION_NAMES = new Set(CANADA_PROVINCES);
+// The GeoJSON from holtzy is world-level; for Canada provinces we'd need a
+// different source. We reuse WorldMap but point it at the provinces GeoJSON.
+const CANADA_GEO_URL =
+  'https://raw.githubusercontent.com/codeforamerica/click_that_hood/master/public/data/canada.geojson';
+
+// GeoJSON province name → quiz canonical name (handle accent variants)
+const NAME_MAP: Record<string, string> = {
+  'Québec': 'Quebec',
+  'Quebec': 'Quebec',
+  'Yukon Territory': 'Yukon',
+  'Northwest Territory': 'Northwest Territories',
+};
 
 export default function CanadaProvincesQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -122,32 +137,51 @@ export default function CanadaProvincesQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse' }}>
-        <tbody>
-          {CANADA_PROVINCES.map((province, i) => {
-            const isGuessed = guessed.has(province);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <tr key={province}>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '240px',
-                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
-                  fontWeight: isGuessed ? 500 : 'normal',
-                  userSelect: 'none',
-                }}>
-                  {isGuessed || isMissed ? province : '\u00A0'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        <table style={{ borderCollapse: 'collapse', flexShrink: 0 }}>
+          <tbody>
+            {CANADA_PROVINCES.map((province, i) => {
+              const isGuessed = guessed.has(province);
+              const isMissed = isOver && !isGuessed;
+              return (
+                <tr key={province}>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
+                    {i + 1}.
+                  </td>
+                  <td style={{
+                    border: '1px solid black',
+                    padding: '4px 8px',
+                    width: '240px',
+                    background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                    color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                    fontWeight: isGuessed ? 500 : 'normal',
+                    userSelect: 'none',
+                  }}>
+                    {isGuessed || isMissed ? province : '\u00A0'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <div className="w-full md:w-[520px] md:sticky md:top-8">
+          <WorldMap
+            guessed={guessed}
+            isOver={isOver}
+            regionNames={REGION_NAMES}
+            nameMap={NAME_MAP}
+            geoUrl={CANADA_GEO_URL}
+            projection="geoMercator"
+            projectionConfig={{ center: [-95, 60], scale: 460 }}
+          />
+          <div className="flex gap-4 mt-2 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-700" /> Guessed</span>
+            {isOver && <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-400" /> Missed</span>}
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-200 border border-gray-300" /> Remaining</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

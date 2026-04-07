@@ -3,9 +3,16 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { COUNTRIES_SOUTH_AMERICA, matchCountry } from '@/lib/countries-south-america';
+import { WorldMap } from '@/components/WorldMap';
+import { getFlag } from '@/lib/country-flags';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = COUNTRIES_SOUTH_AMERICA.length;
+
+const REGION_NAMES = new Set(COUNTRIES_SOUTH_AMERICA);
+const NAME_MAP: Record<string, string> = {
+  'Surinam': 'Suriname',
+};
 
 export default function CountriesSouthAmericaQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -122,32 +129,53 @@ export default function CountriesSouthAmericaQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <tbody>
-          {COUNTRIES_SOUTH_AMERICA.map((name, i) => {
-            const isGuessed = guessed.has(name);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <tr key={name}>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '220px',
-                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
-                  fontWeight: isGuessed ? 500 : 'normal',
-                  userSelect: 'none',
-                }}>
-                  {isGuessed || isMissed ? name : '\u00A0'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        <table style={{ borderCollapse: 'collapse', flexShrink: 0 }}>
+          <tbody>
+            {COUNTRIES_SOUTH_AMERICA.map((name, i) => {
+              const isGuessed = guessed.has(name);
+              const isMissed = isOver && !isGuessed;
+              return (
+                <tr key={name}>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
+                    {i + 1}.
+                  </td>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', fontSize: '16px', width: '36px', textAlign: 'center' }}>
+                    {getFlag(name)}
+                  </td>
+                  <td style={{
+                    border: '1px solid black',
+                    padding: '4px 8px',
+                    width: '192px',
+                    background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                    color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                    fontWeight: isGuessed ? 500 : 'normal',
+                    userSelect: 'none',
+                  }}>
+                    {isGuessed || isMissed ? name : '\u00A0'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <div className="w-full md:w-[380px] md:sticky md:top-8">
+          <WorldMap
+            guessed={guessed}
+            isOver={isOver}
+            regionNames={REGION_NAMES}
+            nameMap={NAME_MAP}
+            projection="geoMercator"
+            projectionConfig={{ center: [-58, -18], scale: 390 }}
+          />
+          <div className="flex gap-4 mt-2 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-700" /> Guessed</span>
+            {isOver && <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-400" /> Missed</span>}
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-200 border border-gray-300" /> Remaining</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

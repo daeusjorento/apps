@@ -3,9 +3,21 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { COUNTRIES_AFRICA, matchCountry } from '@/lib/countries-africa';
+import { WorldMap } from '@/components/WorldMap';
+import { getFlag } from '@/lib/country-flags';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = COUNTRIES_AFRICA.length;
+
+const REGION_NAMES = new Set(COUNTRIES_AFRICA);
+const NAME_MAP: Record<string, string> = {
+  'Dem. Rep. Congo': 'DR Congo',
+  'Congo': 'Republic of the Congo',
+  'Swaziland': 'Eswatini',
+  'eSwatini': 'Eswatini',
+  'Sao Tome and Principe': 'São Tomé and Príncipe',
+  'São Tomé and Príncipe': 'São Tomé and Príncipe',
+};
 
 export default function CountriesAfricaQuiz() {
   const [guessed, setGuessed] = useState<Set<string>>(() => {
@@ -122,32 +134,53 @@ export default function CountriesAfricaQuiz() {
         </button>
       </div>
 
-      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-        <tbody>
-          {COUNTRIES_AFRICA.map((name, i) => {
-            const isGuessed = guessed.has(name);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <tr key={name}>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
-                  {i + 1}.
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '220px',
-                  background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
-                  fontWeight: isGuessed ? 500 : 'normal',
-                  userSelect: 'none',
-                }}>
-                  {isGuessed || isMissed ? name : '\u00A0'}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        <table style={{ borderCollapse: 'collapse', flexShrink: 0 }}>
+          <tbody>
+            {COUNTRIES_AFRICA.map((name, i) => {
+              const isGuessed = guessed.has(name);
+              const isMissed = isOver && !isGuessed;
+              return (
+                <tr key={name}>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
+                    {i + 1}.
+                  </td>
+                  <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', fontSize: '16px', width: '36px', textAlign: 'center' }}>
+                    {getFlag(name)}
+                  </td>
+                  <td style={{
+                    border: '1px solid black',
+                    padding: '4px 8px',
+                    width: '220px',
+                    background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
+                    color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                    fontWeight: isGuessed ? 500 : 'normal',
+                    userSelect: 'none',
+                  }}>
+                    {isGuessed || isMissed ? name : '\u00A0'}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <div className="w-full md:w-[480px] md:sticky md:top-8">
+          <WorldMap
+            guessed={guessed}
+            isOver={isOver}
+            regionNames={REGION_NAMES}
+            nameMap={NAME_MAP}
+            projection="geoMercator"
+            projectionConfig={{ center: [22, 0], scale: 350 }}
+          />
+          <div className="flex gap-4 mt-2 text-xs text-gray-500">
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-700" /> Guessed</span>
+            {isOver && <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-400" /> Missed</span>}
+            <span className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm bg-gray-200 border border-gray-300" /> Remaining</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
