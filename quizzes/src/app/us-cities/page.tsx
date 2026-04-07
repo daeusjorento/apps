@@ -132,8 +132,8 @@ export default function USCitiesQuiz() {
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'right' }}>
                   {i + 1}.
                 </td>
-                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '120px', fontSize: '12px' }}>
-                  {state}
+                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '120px', fontSize: '12px', userSelect: 'none' }}>
+                  {isGuessed || isMissed ? state : '\u00A0'}
                 </td>
                 <td style={{
                   border: '1px solid black',

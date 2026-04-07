@@ -124,7 +124,7 @@ export default function CurrenciesQuiz() {
 
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>
         <tbody>
-          {CURRENCIES.map(({ name, pct }, i) => {
+          {CURRENCIES.map(({ name, pct, symbol }, i) => {
             const isGuessed = guessed.has(name);
             const isMissed = isOver && !isGuessed;
             return (
@@ -135,10 +135,13 @@ export default function CurrenciesQuiz() {
                 <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '60px', textAlign: 'right', fontSize: '12px' }}>
                   {pct}
                 </td>
+                <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', width: '40px', textAlign: 'center', fontSize: '13px', fontWeight: 600 }}>
+                  {isGuessed || isMissed ? symbol : '\u00A0'}
+                </td>
                 <td style={{
                   border: '1px solid black',
                   padding: '4px 8px',
-                  width: '220px',
+                  width: '200px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
                   color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
                   fontWeight: isGuessed ? 500 : 'normal',
