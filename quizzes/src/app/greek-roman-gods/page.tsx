@@ -127,7 +127,7 @@ export default function GreekRomanGodsQuiz() {
             if (row.type === 'header') {
               return (
                 <tr key={`h-${row.text}`}>
-                  <td colSpan={4} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                  <td colSpan={3} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
                     {row.text}
                   </td>
                 </tr>
@@ -161,16 +161,6 @@ export default function GreekRomanGodsQuiz() {
                   userSelect: 'none',
                 }}>
                   {isGuessed || isMissed ? row.roman : '\u00A0'}
-                </td>
-                <td style={{
-                  border: '1px solid black',
-                  padding: '4px 8px',
-                  width: '220px',
-                  background: '#f9fafb',
-                  color: '#9ca3af',
-                  fontSize: '12px',
-                }}>
-                  {row.domain}
                 </td>
               </tr>
             );

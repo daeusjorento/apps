@@ -5,11 +5,18 @@ export const metadata: Metadata = { title: 'Quiz Hub' };
 
 const CATEGORIES = [
   {
-    name: 'Geography',
+    name: 'United States',
     quizzes: [
       { href: '/us-states', label: 'US States' },
       { href: '/us-capitals', label: 'US Capitals' },
       { href: '/us-cities', label: 'US Cities by Population' },
+      { href: '/us-presidents', label: 'US Presidents' },
+      { href: '/us-wars', label: 'US Wars' },
+    ],
+  },
+  {
+    name: 'World Geography',
+    quizzes: [
       { href: '/canada-provinces', label: 'Canadian Provinces & Territories' },
       { href: '/countries-africa', label: 'Countries of Africa' },
       { href: '/countries-asia', label: 'Countries of Asia' },
@@ -22,8 +29,6 @@ const CATEGORIES = [
   {
     name: 'History',
     quizzes: [
-      { href: '/us-presidents', label: 'US Presidents' },
-      { href: '/us-wars', label: 'US Wars' },
       { href: '/global-wars', label: 'Deadliest Wars in History' },
     ],
   },
@@ -46,7 +51,7 @@ const CATEGORIES = [
     ],
   },
   {
-    name: 'Anatomy',
+    name: 'Human Body',
     quizzes: [
       { href: '/bones', label: 'Bones' },
       { href: '/muscles', label: 'Muscles' },
@@ -54,16 +59,26 @@ const CATEGORIES = [
     ],
   },
   {
-    name: 'Entertainment & Games',
+    name: 'Movies, TV & Books',
     quizzes: [
       { href: '/disney-movies', label: 'Disney Animated Movies' },
       { href: '/the-wire', label: 'The Wire Characters' },
       { href: '/lord-of-the-rings', label: 'Lord of the Rings Characters' },
       { href: '/red-rising', label: 'Red Rising Characters' },
+    ],
+  },
+  {
+    name: 'Video Games',
+    quizzes: [
       { href: '/overwatch', label: 'Overwatch 2 Heroes' },
       { href: '/marvel-rivals', label: 'Marvel Rivals Characters' },
-      { href: '/seven-deadly-sins', label: 'Seven Deadly Sins' },
+    ],
+  },
+  {
+    name: 'Mythology & Belief',
+    quizzes: [
       { href: '/greek-roman-gods', label: 'Greek & Roman Gods' },
+      { href: '/seven-deadly-sins', label: 'Seven Deadly Sins' },
     ],
   },
   {
