@@ -28,6 +28,7 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Mei',           accept: ['mei', 'mei-ling zhou'] },
   { name: 'Pharah',        accept: ['pharah', 'fareeha amari'] },
   { name: 'Reaper',        accept: ['reaper', 'gabriel reyes', 'el muerte'] },
+  { name: 'Sierra',        accept: ['sierra'] },
   { name: 'Sojourn',       accept: ['sojourn', 'vivian chase'] },
   { name: 'Soldier: 76',   accept: ['soldier: 76', 'soldier 76', 'soldier76', 'soldier', '76', 'jack morrison'] },
   { name: 'Sombra',        accept: ['sombra', 'olivia colomar'] },
@@ -66,7 +67,7 @@ export const OW_SECTIONS: { header: string; heroes: string[] }[] = [
   },
   {
     header: 'Damage',
-    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker'],
+    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sierra', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker'],
   },
   {
     header: 'Support',
