@@ -3,7 +3,7 @@ const NHL_TEAM_DATA: { name: string; accept: string[] }[] = [
   { name: 'Boston Bruins',          accept: ['boston bruins', 'bruins', 'boston'] },
   { name: 'Buffalo Sabres',         accept: ['buffalo sabres', 'sabres', 'buffalo'] },
   { name: 'Detroit Red Wings',      accept: ['detroit red wings', 'red wings', 'detroit'] },
-  { name: 'Florida Panthers',       accept: ['florida panthers', 'florida'] },
+  { name: 'Florida Panthers',       accept: ['florida panthers', 'florida', 'panthers'] },
   { name: 'Montreal Canadiens',     accept: ['montreal canadiens', 'canadiens', 'montreal', 'habs'] },
   { name: 'Ottawa Senators',        accept: ['ottawa senators', 'senators', 'ottawa', 'sens'] },
   { name: 'Tampa Bay Lightning',    accept: ['tampa bay lightning', 'lightning', 'tampa bay', 'tampa', 'bolts'] },
