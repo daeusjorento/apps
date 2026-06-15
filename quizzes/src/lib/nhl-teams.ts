@@ -24,7 +24,7 @@ const NHL_TEAM_DATA: { name: string; accept: string[] }[] = [
   { name: 'Minnesota Wild',         accept: ['minnesota wild', 'wild', 'minnesota'] },
   { name: 'Nashville Predators',    accept: ['nashville predators', 'predators', 'nashville', 'preds'] },
   { name: 'St. Louis Blues',        accept: ['st. louis blues', 'st louis blues', 'blues', 'st. louis', 'st louis'] },
-  { name: 'Utah Hockey Club',       accept: ['utah hockey club', 'utah hc', 'utah'] },
+  { name: 'Utah Mammoth',           accept: ['utah hockey club', 'utah hc', 'utah', 'mammoth'] },
   { name: 'Winnipeg Jets',          accept: ['winnipeg jets', 'jets', 'winnipeg'] },
   // Pacific
   { name: 'Anaheim Ducks',          accept: ['anaheim ducks', 'ducks', 'anaheim'] },
