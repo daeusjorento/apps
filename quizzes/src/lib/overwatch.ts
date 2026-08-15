@@ -1,6 +1,7 @@
 const HERO_DATA: { name: string; accept: string[] }[] = [
   // Tanks
   { name: 'D.Va',          accept: ['d.va', 'dva', 'd va', 'hana song'] },
+  { name: 'D.Mon',         accept: ['d.mon', 'dmon', 'd mon', 'yuna lee'] },
   { name: 'Doomfist',      accept: ['doomfist', 'doom', 'akande ogundimu'] },
   { name: 'Hazard',        accept: ['hazard'] },
   { name: 'Domina',        accept: ['domina'] },
@@ -28,6 +29,7 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Mei',           accept: ['mei', 'mei-ling zhou'] },
   { name: 'Pharah',        accept: ['pharah', 'fareeha amari'] },
   { name: 'Reaper',        accept: ['reaper', 'gabriel reyes', 'el muerte'] },
+  { name: 'Shion',         accept: ['shion'] },
   { name: 'Sierra',        accept: ['sierra'] },
   { name: 'Sojourn',       accept: ['sojourn', 'vivian chase'] },
   { name: 'Soldier: 76',   accept: ['soldier: 76', 'soldier 76', 'soldier76', 'soldier', '76', 'jack morrison'] },
@@ -63,11 +65,11 @@ export const OW_HEROES = HERO_DATA.map(h => h.name);
 export const OW_SECTIONS: { header: string; heroes: string[] }[] = [
   {
     header: 'Tank',
-    heroes: ['D.Va', 'Domina', 'Doomfist', 'Hazard', 'Junker Queen', 'Mauga', 'Orisa', 'Ramattra', 'Reinhardt', 'Roadhog', 'Sigma', 'Winston', 'Wrecking Ball', 'Zarya'],
+    heroes: ['D.Mon', 'D.Va', 'Domina', 'Doomfist', 'Hazard', 'Junker Queen', 'Mauga', 'Orisa', 'Ramattra', 'Reinhardt', 'Roadhog', 'Sigma', 'Winston', 'Wrecking Ball', 'Zarya'],
   },
   {
     header: 'Damage',
-    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Sierra', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker'],
+    heroes: ['Anran', 'Ashe', 'Bastion', 'Cassidy', 'Echo', 'Emre', 'Freja', 'Genji', 'Hanzo', 'Junkrat', 'Mei', 'Pharah', 'Reaper', 'Shion', 'Sierra', 'Sojourn', 'Soldier: 76', 'Sombra', 'Symmetra', 'Torbjörn', 'Tracer', 'Vendetta', 'Venture', 'Widowmaker'],
   },
   {
     header: 'Support',
