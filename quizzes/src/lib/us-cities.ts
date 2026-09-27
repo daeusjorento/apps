@@ -3,7 +3,10 @@ export interface City {
   state: string;
 }
 
-// Top 25 most populous US cities (2020 Census / 2022 estimates)
+export const US_CITIES_DATA_DATE = 'July 1, 2025';
+
+// Top 25 incorporated places by July 1, 2025 population estimate.
+// Source: U.S. Census Bureau, Vintage 2025 (SUB-IP-EST2025-ANNRNK).
 export const US_CITIES: City[] = [
   { name: 'New York City',  state: 'New York' },
   { name: 'Los Angeles',    state: 'California' },
@@ -14,22 +17,22 @@ export const US_CITIES: City[] = [
   { name: 'San Antonio',    state: 'Texas' },
   { name: 'San Diego',      state: 'California' },
   { name: 'Dallas',         state: 'Texas' },
-  { name: 'San Jose',       state: 'California' },
-  { name: 'Austin',         state: 'Texas' },
-  { name: 'Jacksonville',   state: 'Florida' },
   { name: 'Fort Worth',     state: 'Texas' },
-  { name: 'Columbus',       state: 'Ohio' },
+  { name: 'Jacksonville',   state: 'Florida' },
+  { name: 'Austin',         state: 'Texas' },
+  { name: 'San Jose',       state: 'California' },
   { name: 'Charlotte',      state: 'North Carolina' },
+  { name: 'Columbus',       state: 'Ohio' },
   { name: 'Indianapolis',   state: 'Indiana' },
   { name: 'San Francisco',  state: 'California' },
   { name: 'Seattle',        state: 'Washington' },
   { name: 'Denver',         state: 'Colorado' },
   { name: 'Nashville',      state: 'Tennessee' },
   { name: 'Oklahoma City',  state: 'Oklahoma' },
-  { name: 'El Paso',        state: 'Texas' },
   { name: 'Washington',     state: 'D.C.' },
+  { name: 'El Paso',        state: 'Texas' },
   { name: 'Las Vegas',      state: 'Nevada' },
-  { name: 'Louisville',     state: 'Kentucky' },
+  { name: 'Boston',         state: 'Massachusetts' },
 ];
 
 const CITY_MAP = new Map<string, string>();
@@ -99,8 +102,8 @@ const CITY_ALTS: [string, string][] = [
   ['las vegas', 'Las Vegas'],
   ['vegas', 'Las Vegas'],
   ['las vegas, nevada', 'Las Vegas'],
-  ['louisville', 'Louisville'],
-  ['louisville, kentucky', 'Louisville'],
+  ['boston', 'Boston'],
+  ['boston, massachusetts', 'Boston'],
 ];
 
 CITY_ALTS.forEach(([alias, canonical]) => CITY_MAP.set(alias, canonical));

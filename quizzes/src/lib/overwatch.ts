@@ -45,6 +45,7 @@ const HERO_DATA: { name: string; accept: string[] }[] = [
   { name: 'Ana',           accept: ['ana', 'ana amari'] },
   { name: 'Baptiste',      accept: ['baptiste', 'bap', 'jean-baptiste augustin'] },
   { name: 'Brigitte',      accept: ['brigitte', 'brig', 'brigitte lindholm'] },
+  { name: 'Doctorine',     accept: ['doctorine'] },
   { name: 'Illari',        accept: ['illari', 'illari quispe huanca'] },
   { name: 'Jetpack Cat',   accept: ['jetpack cat', 'jetpackcat'] },
   { name: 'Juno',          accept: ['juno'] },
@@ -73,7 +74,7 @@ export const OW_SECTIONS: { header: string; heroes: string[] }[] = [
   },
   {
     header: 'Support',
-    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Wuyang', 'Zenyatta'],
+    heroes: ['Ana', 'Baptiste', 'Brigitte', 'Doctorine', 'Illari', 'Jetpack Cat', 'Juno', 'Kiriko', 'Lifeweaver', 'Lúcio', 'Mercy', 'Mizuki', 'Moira', 'Wuyang', 'Zenyatta'],
   },
 ];
 

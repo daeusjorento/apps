@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { US_CITIES, matchCity } from '@/lib/us-cities';
+import { US_CITIES, US_CITIES_DATA_DATE, matchCity } from '@/lib/us-cities';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = US_CITIES.length;
@@ -79,7 +79,8 @@ export default function USCitiesQuiz() {
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-1">US Cities by Population</h1>
-      <p className="text-gray-500 text-sm mb-4">Name the {TOTAL} most populous US cities — ranked by population</p>
+      <p className="text-gray-500 text-sm mb-1">Name the {TOTAL} most populous US cities — ranked by population</p>
+      <p className="text-gray-400 text-xs mb-4">U.S. Census Bureau Vintage 2025 estimates as of {US_CITIES_DATA_DATE}</p>
 
       <div className="text-lg font-bold text-gray-800 mb-4 tabular-nums">
         {score}<span className="text-gray-400 font-normal">/{TOTAL}</span>

@@ -11,7 +11,6 @@ const CATEGORIES = [
       { href: '/us-capitals', label: 'US Capitals' },
       { href: '/us-cities', label: 'US Cities by Population' },
       { href: '/us-presidents', label: 'US Presidents' },
-      { href: '/us-wars', label: 'US Wars' },
     ],
   },
   {
@@ -24,12 +23,6 @@ const CATEGORIES = [
       { href: '/countries-north-america', label: 'Countries of North America' },
       { href: '/countries-south-america', label: 'Countries of South America' },
       { href: '/currencies', label: 'World Currencies' },
-    ],
-  },
-  {
-    name: 'History',
-    quizzes: [
-      { href: '/global-wars', label: 'Deadliest Wars in History' },
     ],
   },
   {
@@ -48,6 +41,12 @@ const CATEGORIES = [
     quizzes: [
       { href: '/planets', label: 'Planets of the Solar System' },
       { href: '/solar-system-moons', label: 'Solar System Moons' },
+    ],
+  },
+  {
+    name: 'Science',
+    quizzes: [
+      { href: '/periodic-table', label: 'Periodic Table of Elements' },
     ],
   },
   {
