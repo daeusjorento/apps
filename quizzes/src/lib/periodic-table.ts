@@ -6,6 +6,11 @@ export interface ElementData {
   column: number;
 }
 
+export interface ElementSection {
+  header: string;
+  elements: ElementData[];
+}
+
 export const ELEMENTS: ElementData[] = [
   { atomicNumber: 1, symbol: 'H', name: 'Hydrogen', row: 1, column: 1 },
   { atomicNumber: 2, symbol: 'He', name: 'Helium', row: 1, column: 18 },
@@ -140,3 +145,42 @@ ELEMENT_MAP.set('sulphur', 'Sulfur');
 export function matchElement(guess: string): string | null {
   return ELEMENT_MAP.get(guess.trim().toLowerCase()) ?? null;
 }
+
+const SYMBOL_GROUPS = {
+  'Other nonmetals': new Set(['H', 'C', 'N', 'O', 'P', 'S', 'Se']),
+  'Alkali metals': new Set(['Li', 'Na', 'K', 'Rb', 'Cs', 'Fr']),
+  'Alkaline earth metals': new Set(['Be', 'Mg', 'Ca', 'Sr', 'Ba', 'Ra']),
+  'Metalloids': new Set(['B', 'Si', 'Ge', 'As', 'Sb', 'Te']),
+  'Halogens': new Set(['F', 'Cl', 'Br', 'I', 'At', 'Ts']),
+  'Noble gases': new Set(['He', 'Ne', 'Ar', 'Kr', 'Xe', 'Rn', 'Og']),
+  'Post-transition metals': new Set(['Al', 'Ga', 'In', 'Sn', 'Tl', 'Pb', 'Bi', 'Po', 'Nh', 'Fl', 'Mc', 'Lv']),
+};
+
+const SECTION_ORDER = [
+  'Other nonmetals',
+  'Alkali metals',
+  'Alkaline earth metals',
+  'Transition metals',
+  'Post-transition metals',
+  'Metalloids',
+  'Halogens',
+  'Noble gases',
+  'Lanthanoids',
+  'Actinoids',
+] as const;
+
+function getSection(element: ElementData): typeof SECTION_ORDER[number] {
+  if (element.atomicNumber >= 57 && element.atomicNumber <= 71) return 'Lanthanoids';
+  if (element.atomicNumber >= 89 && element.atomicNumber <= 103) return 'Actinoids';
+
+  for (const [header, symbols] of Object.entries(SYMBOL_GROUPS)) {
+    if (symbols.has(element.symbol)) return header as typeof SECTION_ORDER[number];
+  }
+
+  return 'Transition metals';
+}
+
+export const ELEMENT_SECTIONS: ElementSection[] = SECTION_ORDER.map(header => ({
+  header,
+  elements: ELEMENTS.filter(element => getSection(element) === header),
+}));

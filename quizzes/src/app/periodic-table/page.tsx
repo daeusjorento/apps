@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { ELEMENTS, matchElement } from '@/lib/periodic-table';
+import { ELEMENTS, ELEMENT_SECTIONS, matchElement } from '@/lib/periodic-table';
+import { PeriodicTableDiagram } from '@/components/PeriodicTableDiagram';
 
 type GameState = 'playing' | 'given-up' | 'complete';
 const TOTAL = ELEMENTS.length;
@@ -117,45 +118,53 @@ export default function PeriodicTableQuiz() {
         </button>
       </div>
 
-      <div className="overflow-x-auto pb-4">
-        <div
-          className="grid gap-1 min-w-[1120px]"
-          style={{
-            gridTemplateColumns: 'repeat(18, minmax(58px, 1fr))',
-            gridTemplateRows: 'repeat(7, 72px) 14px repeat(2, 72px)',
-          }}
-        >
-          <div className="text-xs text-gray-400 flex items-center justify-center" style={{ gridColumn: 3, gridRow: 6 }}>57–71</div>
-          <div className="text-xs text-gray-400 flex items-center justify-center" style={{ gridColumn: 3, gridRow: 7 }}>89–103</div>
-          <div className="text-xs font-semibold text-gray-400 flex items-center justify-end pr-2" style={{ gridColumn: '1 / 4', gridRow: 9 }}>Lanthanoids</div>
-          <div className="text-xs font-semibold text-gray-400 flex items-center justify-end pr-2" style={{ gridColumn: '1 / 4', gridRow: 10 }}>Actinoids</div>
-
-          {ELEMENTS.map(element => {
-            const isGuessed = guessed.has(element.name);
-            const isMissed = isOver && !isGuessed;
-            return (
-              <div
-                key={element.atomicNumber}
-                style={{
-                  gridColumn: element.column,
-                  gridRow: element.row,
+      <table style={{ borderCollapse: 'collapse', width: '100%', maxWidth: '520px' }}>
+        <thead>
+          <tr>
+            <th style={{ border: '1px solid black', padding: '5px 8px', background: '#f9fafb', color: '#4b5563', width: '80px', textAlign: 'right', fontSize: '12px' }}>Number</th>
+            <th style={{ border: '1px solid black', padding: '5px 8px', background: '#f9fafb', color: '#4b5563', width: '100px', textAlign: 'left', fontSize: '12px' }}>Shorthand</th>
+            <th style={{ border: '1px solid black', padding: '5px 8px', background: '#f9fafb', color: '#4b5563', textAlign: 'left', fontSize: '12px' }}>Full name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ELEMENT_SECTIONS.map(section => (
+            <Fragment key={section.header}>
+              <tr>
+                <td colSpan={3} style={{ border: '1px solid black', padding: '4px 10px', background: '#e5e7eb', fontWeight: 'bold', fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#374151' }}>
+                  {section.header}
+                </td>
+              </tr>
+              {section.elements.map(element => {
+                const isGuessed = guessed.has(element.name);
+                const isMissed = isOver && !isGuessed;
+                const revealed = isGuessed || isMissed;
+                const answerStyle = {
+                  border: '1px solid black',
+                  padding: '4px 8px',
                   background: isGuessed ? '#dcfce7' : isMissed ? '#fee2e2' : '#f3f4f6',
-                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#6b7280',
-                  userSelect: 'none',
-                }}
-                className="border border-black rounded-sm p-1 overflow-hidden"
-              >
-                <div className="text-[10px] leading-none">{element.atomicNumber}</div>
-                {(isGuessed || isMissed) && (
-                  <>
-                    <div className="text-xl font-bold leading-6 text-center">{element.symbol}</div>
-                    <div className="text-[9px] leading-3 text-center truncate">{element.name}</div>
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
+                  color: isGuessed ? '#166534' : isMissed ? '#b91c1c' : '#f3f4f6',
+                  fontWeight: isGuessed ? 500 : 'normal',
+                  userSelect: 'none' as const,
+                };
+
+                return (
+                  <tr key={element.atomicNumber}>
+                    <td style={{ border: '1px solid black', padding: '4px 8px', background: '#f9fafb', color: '#6b7280', textAlign: 'right' }}>
+                      {element.atomicNumber}
+                    </td>
+                    <td style={answerStyle}>{revealed ? element.symbol : '\u00A0'}</td>
+                    <td style={answerStyle}>{revealed ? element.name : '\u00A0'}</td>
+                  </tr>
+                );
+              })}
+            </Fragment>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold text-gray-800 mb-3">Periodic Table</h2>
+        <PeriodicTableDiagram guessed={guessed} isOver={isOver} />
       </div>
     </div>
   );
