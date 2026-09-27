@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ClearAllButton } from '@/components/ClearAllButton';
 
 export const metadata: Metadata = { title: 'Quiz Hub' };
 
@@ -91,7 +92,10 @@ const CATEGORIES = [
 export default function HubPage() {
   return (
     <div className="min-h-screen bg-white px-8 py-12">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">Quiz Hub</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-2">Quiz Hub</h1>
+      <div className="mb-8">
+        <ClearAllButton />
+      </div>
       <div className="space-y-8">
         {CATEGORIES.map(cat => (
           <section key={cat.name}>
