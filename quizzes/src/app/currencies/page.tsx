@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { FirstLetterHintButton } from '@/components/FirstLetterHintButton';
 import { CURRENCIES, matchCurrency } from '@/lib/currencies';
 
 type GameState = 'playing' | 'given-up' | 'complete';
@@ -62,6 +63,7 @@ export default function CurrenciesQuiz() {
     try {
       localStorage.removeItem('currencies-guessed');
       localStorage.removeItem('currencies-gamestate');
+      localStorage.removeItem('currencies-hints');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -106,7 +108,7 @@ export default function CurrenciesQuiz() {
       {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} currencies!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         {gameState === 'playing' && (
           <button onClick={handleGiveUp} className="px-3 py-1.5 border border-red-300 text-red-600 text-sm rounded hover:bg-red-50">
             Give Up
@@ -120,6 +122,12 @@ export default function CurrenciesQuiz() {
         <button onClick={handleReset} className="px-3 py-1.5 border border-gray-300 text-gray-500 text-sm rounded hover:bg-gray-50">
           Reset
         </button>
+        <FirstLetterHintButton
+          items={CURRENCIES.map(({ name }) => name)}
+          guessed={guessed}
+          storageKey="currencies-hints"
+          disabled={isOver}
+        />
       </div>
 
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>

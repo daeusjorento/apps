@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { FirstLetterHintButton } from '@/components/FirstLetterHintButton';
 import { PRESIDENTS, matchPresident } from '@/lib/presidents';
 
 type GameState = 'playing' | 'given-up' | 'complete';
@@ -69,6 +70,7 @@ export default function USPresidentsQuiz() {
     try {
       localStorage.removeItem('us-presidents-guessed');
       localStorage.removeItem('us-presidents-gamestate');
+      localStorage.removeItem('us-presidents-hints');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -113,7 +115,7 @@ export default function USPresidentsQuiz() {
       {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} presidents!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         {gameState === 'playing' && (
           <button onClick={handleGiveUp} className="px-3 py-1.5 border border-red-300 text-red-600 text-sm rounded hover:bg-red-50">
             Give Up
@@ -127,6 +129,12 @@ export default function USPresidentsQuiz() {
         <button onClick={handleReset} className="px-3 py-1.5 border border-gray-300 text-gray-500 text-sm rounded hover:bg-gray-50">
           Reset
         </button>
+        <FirstLetterHintButton
+          items={DISPLAY_ROWS.map(({ name, i }) => ({ answer: name, key: String(i) }))}
+          guessed={guessed}
+          storageKey="us-presidents-hints"
+          disabled={isOver}
+        />
       </div>
 
       <table style={{ borderCollapse: 'collapse' }}>

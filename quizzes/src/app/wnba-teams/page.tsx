@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { FirstLetterHintButton } from '@/components/FirstLetterHintButton';
 import { WNBA_TEAMS, WNBA_SECTIONS, matchWNBATeam } from '@/lib/wnba-teams';
 
 type GameState = 'playing' | 'given-up' | 'complete';
@@ -73,6 +74,7 @@ export default function WNBATeamsQuiz() {
     try {
       localStorage.removeItem('wnba-teams-guessed');
       localStorage.removeItem('wnba-teams-gamestate');
+      localStorage.removeItem('wnba-teams-hints');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -117,7 +119,7 @@ export default function WNBATeamsQuiz() {
       {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} WNBA teams!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         {gameState === 'playing' && (
           <button onClick={handleGiveUp} className="px-3 py-1.5 border border-red-300 text-red-600 text-sm rounded hover:bg-red-50">
             Give Up
@@ -131,6 +133,12 @@ export default function WNBATeamsQuiz() {
         <button onClick={handleReset} className="px-3 py-1.5 border border-gray-300 text-gray-500 text-sm rounded hover:bg-gray-50">
           Reset
         </button>
+        <FirstLetterHintButton
+          items={WNBA_TEAMS}
+          guessed={guessed}
+          storageKey="wnba-teams-hints"
+          disabled={isOver}
+        />
       </div>
 
       <table style={{ borderCollapse: 'collapse', width: '100%' }}>

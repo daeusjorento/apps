@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { FirstLetterHintButton } from '@/components/FirstLetterHintButton';
 import { CANADA_PROVINCES, matchProvince } from '@/lib/canada-provinces';
 import { WorldMap } from '@/components/WorldMap';
 
@@ -77,6 +78,7 @@ export default function CanadaProvincesQuiz() {
     try {
       localStorage.removeItem('canada-provinces-guessed');
       localStorage.removeItem('canada-provinces-gamestate');
+      localStorage.removeItem('canada-provinces-hints');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -121,7 +123,7 @@ export default function CanadaProvincesQuiz() {
       {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL} provinces and territories!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL}.</p>}
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         {gameState === 'playing' && (
           <button onClick={handleGiveUp} className="px-3 py-1.5 border border-red-300 text-red-600 text-sm rounded hover:bg-red-50">
             Give Up
@@ -135,6 +137,12 @@ export default function CanadaProvincesQuiz() {
         <button onClick={handleReset} className="px-3 py-1.5 border border-gray-300 text-gray-500 text-sm rounded hover:bg-gray-50">
           Reset
         </button>
+        <FirstLetterHintButton
+          items={CANADA_PROVINCES}
+          guessed={guessed}
+          storageKey="canada-provinces-hints"
+          disabled={isOver}
+        />
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 items-start">

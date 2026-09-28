@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { FirstLetterHintButton } from '@/components/FirstLetterHintButton';
 import { TOTAL_GODS, GOD_ROWS, matchGod } from '@/lib/greek-roman-gods';
 
 type GameState = 'playing' | 'given-up' | 'complete';
@@ -61,6 +62,7 @@ export default function GreekRomanGodsQuiz() {
     try {
       localStorage.removeItem('greek-roman-gods-guessed');
       localStorage.removeItem('greek-roman-gods-gamestate');
+      localStorage.removeItem('greek-roman-gods-hints');
     } catch { /* ignore */ }
     setGuessed(new Set());
     setInput('');
@@ -105,7 +107,7 @@ export default function GreekRomanGodsQuiz() {
       {gameState === 'complete' && <p className="text-green-600 font-semibold mb-4">You named all {TOTAL_GODS} deities!</p>}
       {gameState === 'given-up' && <p className="text-gray-500 mb-4">You got {score} out of {TOTAL_GODS}.</p>}
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-wrap items-center gap-3 mb-6">
         {gameState === 'playing' && (
           <button onClick={handleGiveUp} className="px-3 py-1.5 border border-red-300 text-red-600 text-sm rounded hover:bg-red-50">
             Give Up
@@ -119,6 +121,12 @@ export default function GreekRomanGodsQuiz() {
         <button onClick={handleReset} className="px-3 py-1.5 border border-gray-300 text-gray-500 text-sm rounded hover:bg-gray-50">
           Reset
         </button>
+        <FirstLetterHintButton
+          items={GOD_ROWS.flatMap(row => row.type === 'god' ? [row.name] : [])}
+          guessed={guessed}
+          storageKey="greek-roman-gods-hints"
+          disabled={isOver}
+        />
       </div>
 
       <table style={{ borderCollapse: 'collapse' }}>
